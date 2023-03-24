@@ -8,5 +8,4 @@ class ArticleTag(db.Entity):
     idArticleTag = Required(uuid.UUID,default = uuid.uuid4 ,column = 'id_article_tag')
     tag = Required(Tag,column='id_tag')
     article = Optional(Article,column='id_article')
-    ##ADAsda
-    ##addas
+    #askdkasd
