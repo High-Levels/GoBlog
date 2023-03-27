@@ -72,3 +72,12 @@
         http://localhost:5173/login
 
     6.  Noted : Gap dibuat untuk memberi jarak pada setiap component
+
+## Register Page
+
+    Todo:
+
+    1.  Duplicate Login Page
+        - kemudin modifikasi
+    2.  pengujian pada browser:
+        http://localhost:5173/register
