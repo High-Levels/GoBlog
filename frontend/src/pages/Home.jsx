@@ -1,5 +1,6 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import React from 'react'
 import Avatar from '../components/Avatar'
 import Image1 from '../assets/images/avatar.png'
@@ -9,12 +10,17 @@ import Modal from '../components/Modal'
 =======
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 import React from "react";
 import Avatar from "../components/Avatar";
 import Image1 from "../assets/images/avatar.png";
 import CardProfile from "../components/CardProfile";
 import Card from "../components/Card";
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -30,8 +36,12 @@ const Home = () => {
       <hr />
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
       <h1>Modal:</h1>
       <Modal />
+=======
+      <Card />
+>>>>>>> Stashed changes
 =======
       <Card />
 >>>>>>> Stashed changes
