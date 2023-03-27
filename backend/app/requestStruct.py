@@ -72,3 +72,9 @@ def content():
         "datePublished": str
     }
     return schema
+
+def like():
+    schema = {
+        "like": bool
+    }
+    return schema

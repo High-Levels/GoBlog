@@ -42,3 +42,9 @@ def content(jsonBody):
         "datePublished": jsonBody["datePublished"]
     }
     return data
+
+def like(jsonBody):
+    data = {
+        "like": jsonBody["like"]
+    }
+    return data
