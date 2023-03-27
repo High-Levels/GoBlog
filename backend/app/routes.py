@@ -33,8 +33,8 @@ app.route('/list/articles', methods=["GET"])(article.readAllArticle)
 
 
 # Comment
-app.route('/create/comment', methods=["POST"])(comment.createComment)
-app.route('/delete/comment/<id>', methods=["DELETE"])(comment.deleteComment)
+# app.route('/create/comment', methods=["POST"])(comment.createComment)
+# app.route('/delete/comment/<id>', methods=["DELETE"])(comment.deleteComment)
 
 
 # Like
