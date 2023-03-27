@@ -7,6 +7,7 @@ import Image1 from '../assets/images/avatar.png'
 import CardProfile from '../components/CardProfile'
 import Button from '../components/Button'
 import Modal from '../components/Modal'
+<<<<<<< Updated upstream
 =======
 =======
 >>>>>>> Stashed changes
@@ -28,6 +29,14 @@ import Card from "../components/Card";
 const Home = () => {
   return (
     <div className="container">
+=======
+import Navbar from '../components/Navbar'
+
+const Home = () => {
+  return (
+    <div className='container'>
+      <Navbar/>
+>>>>>>> Stashed changes
       <h1>Avatar</h1>
       <Avatar src={Image1} height={40} />
       <hr />
