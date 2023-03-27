@@ -49,8 +49,10 @@ def createUser():
         return responseHandler.badGateway(response)   
     
 @jwt_required(fresh=True)
-def readUser(id):
+def readUser(id=None):
     currentUser = get_jwt_identity()
+    if id is None:
+        id = currentUser['idUser']
     if currentUser['idUser'] == id:
         try:
             readById = db.select(f"select id_user,username,email,password,name,gender,address,birth,phone_number,date_register,picture from tbl_user where id_user = '{id}'" )

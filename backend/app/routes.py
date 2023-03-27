@@ -7,6 +7,7 @@ app.route('/login',methods=['POST'])(auth.login)
 
 #User
 app.route('/register',methods=['POST'])(user.createUser)
+app.route('/profile/',methods=['GET'])(user.readUser)
 app.route('/profile/<id>',methods=['GET'])(user.readUser)
 app.route('/update/profile/<id>',methods=['PATCH'])(user.updateUser)
 app.route('/delete/profile/<id>',methods=['DELETE'])(user.deleteUser)
