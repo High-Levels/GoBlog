@@ -2,12 +2,7 @@ import React from 'react'
 import Avatar from '../components/Avatar'
 import Image1 from '../assets/images/avatar.png'
 import CardProfile from '../components/CardProfile'
-import Button from '../components/Button'
 import Modal from '../components/Modal'
-
-import Avatar from '../components/Avatar'
-import Image1 from '../assets/images/avatar.png'
-import CardProfile from '../components/CardProfile'
 import Card from '../components/Card'
 
 const Home = () => {
