@@ -1,9 +1,9 @@
 import React from 'react'
 
-const avatar = ({ width, heigh, ...rest }) => {
+const avatar = ({ width, height, ...rest }) => {
   return (
     <div>
-      <img style={{ width, heigh }} {...rest} />
+      <img style={{ width, height }} {...rest} />
     </div>
   )
 }
