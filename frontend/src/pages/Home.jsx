@@ -3,14 +3,13 @@ import Avatar from '../components/Avatar'
 import Image1 from '../assets/images/avatar.png'
 import CardProfile from '../components/CardProfile'
 import Modal from '../components/Modal'
-import Card from '../components/Card'
-import Navbar from '../components/Navbar'
+import Card from '../components/Card' 
 import Gap from '../components/Gap'
 
 const Home = () => {
   return (
+    <>
     <div className='container'>
-      {/* <Navbar /> */}
       <h1>Avatar</h1>
       <Avatar src={Image1} height={40} />
       <hr />
@@ -25,6 +24,7 @@ const Home = () => {
       <Gap height={18} />
       <Card />
     </div>
+    </>
   )
 }
 
