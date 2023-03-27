@@ -10,7 +10,7 @@ import Gap from '../components/Gap'
 const Home = () => {
   return (
     <div className='container'>
-      <Navbar />
+      {/* <Navbar /> */}
       <h1>Avatar</h1>
       <Avatar src={Image1} height={40} />
       <hr />
