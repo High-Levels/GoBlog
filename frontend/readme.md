@@ -35,7 +35,7 @@
     3.  pengujian pada browser:
         http://localhost:5173
 
-## Modal components
+## Modal & Button components
 
     Todo:
 
@@ -50,3 +50,25 @@
         - import dan pasang Modal component
     4.  pengujian pada browser:
         http://localhost:5173
+
+## Login Page
+
+    Todo:
+
+    1.  src/components/Input.jsx
+        - buat functional Input component
+        - pasang props label, {...rest}
+    2.  src/components/Gap.jsx
+        - buat functional Gap component
+        - pasang props height, width pada style
+    3.  src/pages/Login.jsx
+        - buat functional Login component
+        - import & pasang Button
+        - import & pasang Input
+        - import & pasang Gap
+    4.  App.js
+        - import dan pasang Login pada path element
+    5.  pengujian pada browser:
+        http://localhost:5173/login
+
+    6.  Noted : Gap dibuat untuk memberi jarak pada setiap component
