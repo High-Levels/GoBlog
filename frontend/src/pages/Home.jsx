@@ -5,6 +5,7 @@ import CardProfile from '../components/CardProfile'
 import Modal from '../components/Modal'
 import Card from '../components/Card'
 import Navbar from '../components/Navbar'
+import Gap from '../components/Gap'
 
 const Home = () => {
   return (
@@ -19,7 +20,9 @@ const Home = () => {
       <h1>Modal:</h1>
       <Modal />
       <Card />
+      <Gap height={18} />
       <Card />
+      <Gap height={18} />
       <Card />
     </div>
   )
