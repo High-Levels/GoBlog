@@ -19,34 +19,6 @@ def userUpdate(jsonBody):
     }
     return data
 
-def Books(jsonBody):
-    data={
-        # "stock": jsonBody['stock'],
-        "bookTitle": jsonBody['bookTitle'],
-        "bookCategory": jsonBody['bookCategory'],
-        "bookAuthor": jsonBody['bookAuthor'],
-        "bookPublisher": jsonBody['bookPublisher'],
-    } 
-    return data
-
-def Authors(jsonBody):
-    data = { 
-        "name": jsonBody['name'],
-        "email": jsonBody['email'],
-        "gender": jsonBody['gender'],
-        "address": jsonBody['address'],
-        "phoneNumber": jsonBody['phoneNumber']
-    }
-    return data
-
-def Publisher(jsonBody):
-    data = {
-        "name": jsonBody['name'],
-        "email": jsonBody['email'],
-        "address": jsonBody['address'],
-        "phoneNumber": jsonBody['phoneNumber']
-    }
-    return data
 
 def Category(jsonBody):
     data = {
@@ -57,5 +29,16 @@ def Category(jsonBody):
 def Tag(jsonBody):
     data = {
         "name": jsonBody['name']
+    }
+    return data
+
+def content(jsonBody):
+    data = {
+        "title": jsonBody["title"],
+        "subtitle": jsonBody["subtitle"],
+        "img": jsonBody["img"],
+        "captions": jsonBody["caption"],
+        "contentBody": jsonBody["contentBody"],
+        "datePublished": jsonBody["datePublished"]
     }
     return data

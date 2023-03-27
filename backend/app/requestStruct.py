@@ -61,3 +61,14 @@ def Tag():
         "name": str
     }
     return schema
+
+def content():
+    schema = {
+        "title": str,
+        "subtitle": str,
+        "img": str,
+        "captions": str,
+        "contentBody": str,
+        "datePublished": str
+    }
+    return schema

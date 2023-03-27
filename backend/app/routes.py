@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import auth,user,category,tag
+from app.controllers import auth,user,category,tag, article, comment, like
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
@@ -7,7 +7,6 @@ app.route('/login',methods=['POST'])(auth.login)
 
 #User
 app.route('/register',methods=['POST'])(user.createUser)
-app.route('/profile/',methods=['GET'])(user.readUser)
 app.route('/profile/<id>',methods=['GET'])(user.readUser)
 app.route('/update/profile/<id>',methods=['PATCH'])(user.updateUser)
 app.route('/delete/profile/<id>',methods=['DELETE'])(user.deleteUser)
@@ -24,3 +23,18 @@ app.route('/delete/category/<id>',methods = ['DELETE'])(category.deleteCategory)
 app.route('/list/tags',methods = ['GET'])(tag.listTag)
 app.route('/create/tag',methods = ['POST'])(tag.createTag)
 
+
+# Article
+app.route('/create/article', methods=["POST"])(article.createArticle)
+app.route('/read/article/<id>', methods=["GET"])(article.readArticle)
+app.route('/update/article/<id>', methods=["PUT"])(article.updateArticle)
+app.route('/delete/article/<id>', methods=["DELETE"])(article.deleteArticle)
+app.route('/list/articles', methods=["GET"])(article.readAllArticle)
+
+
+# Comment
+app.route('/create/comment', methods=["POST"])(comment.createComment)
+app.route('/delete/comment/<id>', methods=["DELETE"])(comment.deleteComment)
+
+
+# Like
