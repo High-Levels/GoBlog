@@ -22,3 +22,15 @@
         - import dan panggil Image
     7.  pengujian pada browser:
         http://localhost:5173
+
+## CardProfile components
+
+    Todo:
+
+    1.  src/components/Avatar.jsx
+        - buat functional CardProfile component
+        - import dan panggil Avatar
+    2.  src/pages/Home.jsx
+        - import dan pasang CardProfile
+    3.  pengujian pada browser:
+        http://localhost:5173
