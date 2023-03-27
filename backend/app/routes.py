@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import auth,user,category,tag, article, comment, articleLikes
+from app.controllers import auth,user,category,tag, article, articleLikes
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
