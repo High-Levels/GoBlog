@@ -4,6 +4,7 @@ import Gap from '../components/Gap'
 import Input from '../components/Input'
 import ImageLogin from '../assets/images/Image-login.jpg'
 import '../style/index.css'
+import Modal from '../components/Modal'
 
 const Login = () => {
   return (

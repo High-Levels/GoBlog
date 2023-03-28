@@ -6,7 +6,7 @@ const Modal = () => {
     <div>
       <Button
         label='test modal'
-        variant='primary'
+        variant='success'
         data-bs-toggle='modal'
         data-bs-target='#exampleModal'
       />
@@ -38,7 +38,7 @@ const Modal = () => {
                 type='button'
                 data-bs-dismiss='modal'
               />
-              <Button variant='primary' label='Save Change' type='button' />
+              <Button variant='success' label='Save Change' type='button' />
             </div>
           </div>
         </div>
