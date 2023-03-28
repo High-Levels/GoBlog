@@ -1,4 +1,4 @@
-import Particle from "./components/Particles.BG";
+
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -9,7 +9,7 @@ import NewStory from "./pages/NewStory";
 function App() {
   return (
     <>
-      <Particle />
+      
       <Navbar />
       <br />
       <br />

@@ -5,6 +5,7 @@ import CardProfile from '../components/CardProfile'
 import Card from '../components/Card'
 import Gap from '../components/Gap'
 
+
 const Home = () => {
   return (
     <>

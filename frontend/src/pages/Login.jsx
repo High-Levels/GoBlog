@@ -5,10 +5,12 @@ import Input from '../components/Input'
 import ImageLogin from '../assets/images/Image-login.jpg'
 import '../style/index.css'
 import Modal from '../components/Modal'
+import Particle from '../components/Particles.BG'
 
 const Login = () => {
   return (
     <div>
+      <Particle/>
       <div className='row justify-content-center align-items-center h-100'>
         <div className='col-md-10 mt-5'>
           <div className='card'>
