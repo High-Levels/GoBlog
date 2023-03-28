@@ -3,12 +3,22 @@ import Button from './Button'
 import GoblogPict from '../assets/images/Goblog.jpeg'
 import Avatar from './Avatar'
 import Image1 from '../assets/images/avatar.png'
+import '../style/index.css'
 
 
+// $(document).ready(function(){
+//   $(window).scroll(function(){
+//     if ($(this).scrollTop()>50){
+//       $('.navbar').addClass('scrolled');
+//     } else{
+//       $('navbar').removeClass('scrolled')
+//     }
+//   });
+// });
 const Navbar = () => {
   return (
     <div>
-      <nav className="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+      <nav className="navbar navbar-expand-sm navbar-light bg-light  fixed-top">
         <div className="container-fluid">
           <a className="navbar-brand" href="/"><img src={GoblogPict} style={{ width: "150px" }} /></a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
@@ -34,15 +44,15 @@ const Navbar = () => {
               />
             </form>
             <div className='dropdown'>
-              <Avatar src={Image1} height={40} type='button' className='dropdown-toggle' id="menu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" />
+              <button className='btn dropdown-toggle' type='button' id='dropdownMenuButton' data-bs-toggle="dropdown" aria-expanded="false">
+                <Avatar src={Image1} height={30} className="rounded-5"/>
+              </button>
+              <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+                <li><a className='dropdown-item' href='#'>test</a></li>
+                <li><a className='dropdown-item' href='#'>test</a></li>
+                <li><a className='dropdown-item' href='#'>test</a></li>
+              </ul>
             </div>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">CSS</a></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">JavaScript</a></li>
-      <li role="presentation" class="divider"></li>
-      <li role="presentation"><a role="menuitem" tabindex="-1" href="#">About Us</a></li>
-    </ul>
           </div>
         </div>
       </nav>
