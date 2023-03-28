@@ -1,0 +1,82 @@
+.header {
+    background-color: yellow;
+    color: black;
+}
+
+.inside{
+    height: 60vh;
+    align-items: center;
+   
+}
+
+.headline {
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.gif {
+    height: 55vh;
+    margin-left: 50px;
+}
+
+.first_line,
+.second_line {
+  white-space: nowrap; 
+  overflow: hidden; 
+  margin: 0.5rem auto;
+  font-family: "Major Mono Display", monospace;
+  font-weight: bold;
+}
+.a {
+    position: -webkit-sticky; 
+    position: absolute;
+    top: 0;
+}
+
+.first_line {
+    border-right: 2px solid yellow;
+    animation: typewriter_1 6s steps(33) 1s 1 normal both,
+      first_cursor 20ms steps(33) 8;
+  }
+
+  .second_line {
+    border-right: 2px solid yellow;
+    animation: typewriter_2 5s steps(31) 1s 1 normal both,
+      second_cursor 20ms steps(31) infinite;
+    -webkit-animation-delay: 7s;
+    animation-delay: 7s;
+  }
+
+  @keyframes typewriter_1 {
+    from {
+      width: 0;
+    }
+    to {
+      width: 20rem;
+    }
+  }
+  @keyframes typewriter_2 {
+    from {
+      width: 0;
+    }
+    to {
+      width: 20rem;
+    }
+  }
+
+  @keyframes first_cursor {
+    from {
+      border-right-color: yellow;
+    }
+    to {
+      border-right-color: yellow;
+    }
+  }
+  @keyframes second_cursor{
+    from {
+      border-right-color: yellow;
+    }
+    to {
+      border-right-color:yellow;
+    }
+  }
