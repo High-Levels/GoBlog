@@ -1,19 +1,19 @@
 from app.models import db
 from app import requestMapping,requestStruct,responseHandler
-from flask import request
+from flask import request,jsonify
 from json_checker import Checker
 from uuid import uuid4
 from flask_jwt_extended import get_jwt_identity,jwt_required
+from pony.orm import select,exists
+from app.models.category import Category
 
 def listCategory():
     try:
-        listCategory = db.select(f"select id_category, name from tbl_category")
+        listCategory = select(a for a in Category)[:]
         data = []
-        for i in listCategory:
-            data.append({
-                "id": i[0],
-                "category": i[1]
-            })
+        for i in range(len(listCategory)):
+            data.append(listCategory[i].to_dict())
+        #print(data[0]['idCategory'])
         return responseHandler.ok(data)
     except Exception as err:
         response = {
@@ -26,10 +26,9 @@ def createCategory():
     currentUser = get_jwt_identity()
     try:
         if currentUser['username'] == "Admin":
-            jsonBody = request.json
-            data = requestMapping.Category(jsonBody)
+            data = requestMapping.Category(request.json)
             result = Checker(requestStruct.Category(),soft=True).validate(data)
-            checkCategory = db.select(f"select *from tbl_category where name = '{result['name']}'")
+            checkCategory = Category.get(name = result['name'])
             if result['name'] == "":
                 response = {
                     "Message" : "All Data Must be Filled"
@@ -41,10 +40,10 @@ def createCategory():
                 }
                 return responseHandler.badRequest(response)
             else:
-                createBookCategory = (f"insert into tbl_category(id_category,name) values ('{str(uuid4())}','{result['name']}')")
-                db.execute(createBookCategory)
+                #Create
+                Category(idCategory = str(uuid4()) ,name = result['name'])
                 response = {
-                    "Data": jsonBody,
+                    "Data": result,
                     "Message": "Data Created"
                 }
                 return responseHandler.ok(response)
@@ -57,30 +56,19 @@ def createCategory():
             response ={
                 "Error": str(err)
             }
-            return responseHandler.badGateway(response)    
-    
+            return responseHandler.badGateway(response)     
     
 def readCategory(id):
     try:
-        readById = db.select(f"select id_category,name from tbl_category where id_category = '{id}'")
-        data = []
-        for i in readById:
-            data.append({
-                "idCategory": i[0],
-                "category": i[1]
-            })
-        if not data:
-            response = {
-                "Message": "No Data Found"
-            }
-            return responseHandler.badRequest(response)
+        readById = Category.get(idCategory = id)
+        data = readById.to_dict()
         response = {
-            "Data": data[0]
+            "Data": data
         }
         return responseHandler.ok(response)
     except Exception as err:
         response = {
-            "Error": str(err)
+            "Message": "No Data Found"
         }
         return responseHandler.badGateway(response)
 
@@ -92,11 +80,17 @@ def updateCategory(id):
             jsonBody = request.json
             data = requestMapping.Category(jsonBody)
             result = Checker(requestStruct.Category(),soft=True).validate(data)
-            updateCategory = (f"update tbl_category set name='{result['name']}' where id_category = '{id}'")
-            db.execute(updateCategory)
+            checkName = db.select(f"select name from tbl_category where name = '{result['name']}' and name != (select name from tbl_category where id_category = '{id}')")
+            if checkName:
+                response = {
+                    "Message": "Category is Exist"
+                }
+                return responseHandler.badRequest(response)
+            #Update
+            Category[id].set(**result)
             response = {
-                "Data": updateCategory,
-                "Message": "Success Update Publisher"
+                "Data": result,
+                "Message": "Success Update Category"
             }
             return responseHandler.ok(response)
         else:
@@ -116,20 +110,14 @@ def deleteCategory(id):
     currentUser = get_jwt_identity()
     try:
         if currentUser['username'] == "Admin":
-            selectById = (f"select id_category from tbl_category where id_category = '{id}'")
-            data = []
-            for i in db.execute(selectById):
-                data.append({
-                    "idCategory": i[0]
-                })
-            if not data:
+            selectById = Category.get(idCategory = id)
+            if not selectById:
                 response = {
                     "Message": "Data Not Found"
                 }
                 return responseHandler.badRequest(response)
-            elif data:
-                deleteById = (f"delete from tbl_category where id_category ='{id}'")
-                db.execute(deleteById)
+            elif selectById:
+                Category[id].delete()
                 response = {
                     "Message": "Delete Success"
                 }

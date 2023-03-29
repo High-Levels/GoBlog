@@ -4,5 +4,5 @@ class Category(db.Entity):
     _table_ = "tbl_category"
     idCategory = PrimaryKey(uuid.UUID,default = uuid.uuid4 ,column = 'id_category')
     articleCategory = Set('ArticleCategory')
-    name = Required(str)
+    name = Required(str,unique = True)
     

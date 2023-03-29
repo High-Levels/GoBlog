@@ -1,10 +1,13 @@
 from flask_jwt_extended import jwt_required,get_jwt_identity
-from flask import request
+from flask import request,jsonify
 from json_checker import Checker
 from app import responseHandler,requestMapping,requestStruct,db,email_regex,allowedextensions,uploadFolderUsers
 import os,hashlib
 from uuid import uuid4
 from werkzeug.utils import secure_filename
+from pony.orm import select
+from app.models.user import User
+from datetime import date,datetime
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedextensions
@@ -14,23 +17,21 @@ def createUser():
         jsonBody = request.json
         data = requestMapping.createUser(jsonBody)
         result = Checker(requestStruct.User(),soft = True).validate(data)
-        checkUser = db.select(f"select *from tbl_user where username = '{jsonBody['username']}' or email = '{jsonBody['email']}'")
-
-        if jsonBody['username']=="" or jsonBody['email']==""or jsonBody['password']=="":
+        checkUser = select(a for a in User if a.username is result['username'] or a.email is result['email'])[:]
+        if result['username']=="" or result['email']==""or result['password']=="":
             response = {
                     "Message": "All Data Must be Filled"
                 }
             return responseHandler.badRequest(response)
         if checkUser:
                 response = {
-                    "Message": (f"Username or Email is Exist")
+                    "Message": "Username or Email is Exist"
                 }
                 return responseHandler.badRequest(response)
         elif email_regex.match(result['email']):
-            password = result['password']
-            hashpassword = hashlib.md5((password+ os.getenv("SALT_PASSWORD")).encode())
-            createUser = (f"insert into tbl_user(id_user,username,email,password,date_register) values('{str(uuid4())}','{result['username']}','{result['email']}','{hashpassword.hexdigest()}',now())")
-            db.execute(createUser)
+            hashpassword = (hashlib.md5((result['password']+ os.getenv("SALT_PASSWORD")).encode())).hexdigest()
+            #CREATE
+            User(idUser =str(uuid4()),username = result['username'],email = result['email'], password = hashpassword,dateRegister = datetime.now())
             response = {
                     "Data": jsonBody,
                     "Message": "Data Created"
@@ -48,60 +49,36 @@ def createUser():
             }
         return responseHandler.badGateway(response)   
     
-@jwt_required(fresh=True)
-def readUser(id=None):
-    currentUser = get_jwt_identity()
-    if id is None:
-        id = currentUser['idUser']
-    if currentUser['idUser'] == id:
-        try:
-            readById = db.select(f"select id_user,username,email,password,name,gender,address,birth,phone_number,date_register,picture from tbl_user where id_user = '{id}'" )
-            data = []
-            for i in readById:
-                data.append({
-                    "idUser": i[0],
-                    "username":i[1],
-                    "email": i[2],
-                    "password": i[3],
-                    "name": i[4],
-                    "gender": i[5],
-                    "address": i[6],
-                    "birth": i[7],
-                    "phoneNumber":i[8],
-                    "dateRegister":i[9],
-                    "picture":i[10]
-                })
-            if not data:
-                    response = {
-                        "Message": "User Not Found"
-                    }
-                    return responseHandler.badRequest(response)
-            response ={
-                    "Data": data[0]
-                }
-            return responseHandler.ok(response)
-        except Exception as err:
-            response = {
-                "Error": str(err)
-            }
-            return responseHandler.badGateway(response)
-    else:
-        response = {
-            "Message": "You are Not Allowed Here"
-        }
-        return responseHandler.badRequest(response)
+@jwt_required()
+def readUser(id):                     
+    try:
+        readById = User.get(idUser = id)
+        data = readById.to_dict()
     
-@jwt_required(fresh=True)
+        response = {
+            "Data": data
+        } 
+        return responseHandler.ok(response)
+    except Exception as err:
+            response = {
+                "Message": "User Not Found"
+            }
+            return responseHandler.badRequest(response)
+    
+@jwt_required()
 def updateUser(id):
     currentUser = get_jwt_identity()
     if currentUser['idUser'] == id:
-        jsonBody = request.form
         files = request.files.getlist('picture')
-        data = requestMapping.userUpdate(jsonBody)
+        data = requestMapping.userUpdate(request.form)
         result = Checker(requestStruct.userUpdate(),soft=True).validate(data)
-        hashpass = hashlib.md5((result['password']+os.getenv("SALT_PASSWORD")).encode())
+        hashpass = (hashlib.md5((result['password']+os.getenv("SALT_PASSWORD")).encode())).hexdigest()
         success = False
         try:
+            # a = select(a for a in User if str(a.idUser) is currentUser['idUser'])[:]
+            # print(a[0].idUser)
+            # check = User.get(username = result['username'] and select(), email = result['email'] and select(a for a in User if str(a.idUser) != currentUser['idUser']))
+            # print(check)
             checkUsername = db.select(f"select username from tbl_user where username = '{result['username']}' and username != (select username from tbl_user where id_user = '{currentUser['idUser']}')")
             checkEmail = db.select(f"select email from tbl_user where email = '{result['email']}' and email != (select email from tbl_user where id_user = '{currentUser['idUser']}')")
             if checkUsername:
@@ -120,26 +97,22 @@ def updateUser(id):
                 }
                 return responseHandler.badRequest(response)
             if email_regex.match(result['email']):
-                for user in db.select(f"select id_user,picture from tbl_user where id_user = '{currentUser['idUser']}'"): 
-                    user = {
-                        "id_user": user[0],
-                        "pic_user": user[1]
-                    } 
+                user = select(a for a in User if str(a.idUser) is currentUser['idUser'])[:]
                 for i in files:
                     if i and allowed_file(i.filename):
                         try:
-                            os.remove(os.path.join(uploadFolderUsers, user['pic_user']))
+                            os.remove(os.path.join(uploadFolderUsers, user[0].picture))
                         except:
-                            pass
+                            print("error")
                         filename = secure_filename(i.filename)
                         picfilename = currentUser['idUser'] + '_' + filename
                         i.save(os.path.join(uploadFolderUsers,picfilename))
                         success = True
                     if success:
-                        updateUser = (f"update tbl_user set username='{result['username']}' ,password = '{hashpass.hexdigest()}',email='{result['email']}',name='{result['name']}',gender='{result['gender']}',address='{result['address']}',birth='{result['birth']}',phone_number='{result['phoneNumber']}',picture = '{picfilename}' where id_user = '{currentUser['idUser']}'")
-                        db.execute(updateUser)
+                        result = Checker(requestStruct.userUpdate(),soft=True).validate(data)
+                        User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'],picture = picfilename)
                         response = {
-                            "Data": updateUser,
+                            "Data": result,
                             "Message": "Success Update User"
                         }
                         return responseHandler.ok(response)
@@ -149,10 +122,9 @@ def updateUser(id):
                         }
                         return responseHandler.badRequest(response)
                 if not files:
-                    updateUser = (f"update tbl_user set username='{result['username']}' ,password = '{hashpass.hexdigest()}',email='{result['email']}',name='{result['name']}',gender='{result['gender']}',address='{result['address']}',birth='{result['birth']}',phone_number='{result['phoneNumber']}' where id_user = '{currentUser['idUser']}'")
-                    db.execute(updateUser)
+                    User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'])
                     response = {
-                        "Data": updateUser,
+                        "Data": result,
                         "Message": "Success Update User"
                     }
                     return responseHandler.ok(response)
@@ -177,20 +149,14 @@ def deleteUser(id):
     currentUser = get_jwt_identity()
     try:
         if currentUser['idUser'] == id:    
-            selectById = (f"select id_user from tbl_user where id_user = '{id}'")
-            data = []
-            for i in db.execute(selectById):
-                data.append({
-                    "idUser": i[0]
-                })
-            if not data:
+            selectById = User.get(idUser = id)
+            if not selectById:
                 response = {
                     "Message": "Data Not Found"
                 }
                 return responseHandler.badRequest(response)
-            elif data:
-                deleteById = (f"delete from tbl_user where id_user = '{id}'")
-                db.execute(deleteById)
+            elif selectById:
+                User[id].delete()
                 response = {
                     "Message": "Delete Success"
                 }

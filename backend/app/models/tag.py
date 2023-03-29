@@ -4,5 +4,5 @@ class Tag(db.Entity):
     _table_ = "tbl_tag"
     idTag = Required(uuid.UUID,default = uuid.uuid4 ,column = 'id_tag')
     articleTag = Set('ArticleTag')
-    name = Required(str)
+    name = Required(str,unique = True)
     

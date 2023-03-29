@@ -4,16 +4,15 @@ from flask import request
 from json_checker import Checker
 from uuid import uuid4
 from flask_jwt_extended import get_jwt_identity,jwt_required
+from pony.orm import select
+from app.models.tag import Tag
 
 def listTag():
     try:
-        listTag = db.select(f"select id_tag, name from tbl_tag")
+        listTag = select(a for a in Tag)[:]
         data = []
-        for i in listTag:
-            data.append({
-                "id": i[0],
-                "tag": i[1]
-            })
+        for i in range(len(listTag)):
+            data.append(listTag[i].to_dict())
         return responseHandler.ok(data)
     except Exception as err:
         response = {
@@ -23,13 +22,10 @@ def listTag():
     
 @jwt_required()
 def createTag():
-    currentUser = get_jwt_identity()
     try:
-        if currentUser:
-            jsonBody = request.json
-            data = requestMapping.Tag(jsonBody)
+            data = requestMapping.Tag(request.json)
             result = Checker(requestStruct.Tag(),soft=True).validate(data)
-            checkTag = db.select(f"select *from tbl_tag where name = '{result['name']}'")
+            checkTag = Tag.get(name = result['name'])
             if result['name'] == "":
                 response = {
                     "Message" : "All Data Must be Filled"
@@ -41,18 +37,12 @@ def createTag():
                 }
                 return responseHandler.badRequest(response)
             else:
-                createTag = (f"insert into tbl_tag(id_tag,name) values ('{str(uuid4())}','{result['name']}')")
-                db.execute(createTag)
+                Tag(idTag = str(uuid4()),name = result['name'])
                 response = {
-                    "Data": jsonBody,
+                    "Data": result,
                     "Message": "Data Created"
                 }
                 return responseHandler.ok(response)
-        else:
-            response = {
-                "Message": "You are Not Allowed Here"
-            }
-            return responseHandler.badRequest(response)
     except Exception as err:
             response ={
                 "Error": str(err)
