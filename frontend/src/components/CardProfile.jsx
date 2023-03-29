@@ -1,6 +1,6 @@
-import React from 'react'
-import Avatar from './Avatar'
-import Image1 from '../assets/images/avatar.png'
+import React from 'react';
+import Avatar from './Avatar';
+import Image1 from '../assets/images/avatar.png';
 
 const CardProfile = () => {
   return (
@@ -20,4 +20,4 @@ const CardProfile = () => {
   )
 }
 
-export default CardProfile
+export default CardProfile;

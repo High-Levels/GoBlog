@@ -1,9 +1,9 @@
-import React from 'react'
-import Button from './Button'
-import GoblogPict from '../assets/images/Goblog.jpeg'
-import Avatar from './Avatar'
-import Image1 from '../assets/images/avatar.png'
-import '../style/index.css'
+import React from 'react';
+import Button from './Button';
+import GoblogPict from '../assets/images/Goblog.jpeg';
+import Avatar from './Avatar';
+import Image1 from '../assets/images/avatar.png';
+import '../style/index.css';
 
 
 // $(document).ready(function(){
@@ -60,4 +60,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;

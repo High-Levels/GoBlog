@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Input = ({ label, ...rest }) => {
   return (
@@ -11,4 +11,4 @@ const Input = ({ label, ...rest }) => {
   )
 }
 
-export default Input
+export default Input;

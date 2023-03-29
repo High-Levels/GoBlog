@@ -1,21 +1,12 @@
 .header {
     background-color: yellow;
     color: black;
+    
 }
 
 .headline {
     background-color: white;
     margin-bottom: 20px;
-}
-
-.gif {
-    height: 55vh;
-    margin-left: 50px;
-}
-
-.a {
-    position:fixed;
-    background-color: yellow;
 }
 
 .first_line,
@@ -26,11 +17,8 @@
   font-family: "Major Mono Display", monospace;
   font-weight: bold;
 }
-.a {
-  overflow-y: scroll;
-}
 
-.b {
+.sticky {
   position: -webkit-sticky;
   position: sticky;
   top: 0;

@@ -1,5 +1,5 @@
-import React from 'react'
-import Button from './Button'
+import React from 'react';
+import Button from './Button';
 
 const Modal = () => {
   return (
@@ -47,4 +47,4 @@ const Modal = () => {
   )
 }
 
-export default Modal
+export default Modal;

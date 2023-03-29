@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Button = ({ label, variant, width, ...rest }) => {
   return (
@@ -10,4 +10,4 @@ const Button = ({ label, variant, width, ...rest }) => {
   )
 }
 
-export default Button
+export default Button;

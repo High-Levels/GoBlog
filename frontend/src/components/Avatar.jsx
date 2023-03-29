@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const avatar = ({ width, height, ...rest }) => {
   return (
@@ -8,4 +8,4 @@ const avatar = ({ width, height, ...rest }) => {
   )
 }
 
-export default avatar
+export default avatar;
