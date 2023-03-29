@@ -3,3 +3,10 @@
   font-family: 'Great Vibes', cursive;
   font-size: 70px;
 }
+/* navbar */
+.navbar{
+  transition: background-color 0.5 ease-in-out;
+}
+.navbar.scrolled{
+  background-color: aqua;
+}
