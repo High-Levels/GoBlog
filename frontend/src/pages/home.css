@@ -3,12 +3,6 @@
     color: black;
 }
 
-.inside{
-    height: 60vh;
-    align-items: center;
-   
-}
-
 .headline {
     background-color: white;
     margin-bottom: 20px;
@@ -17,6 +11,11 @@
 .gif {
     height: 55vh;
     margin-left: 50px;
+}
+
+.a {
+    position:fixed;
+    background-color: yellow;
 }
 
 .first_line,
@@ -28,9 +27,13 @@
   font-weight: bold;
 }
 .a {
-    position: -webkit-sticky; 
-    position: absolute;
-    top: 0;
+  overflow-y: scroll;
+}
+
+.b {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
 }
 
 .first_line {
