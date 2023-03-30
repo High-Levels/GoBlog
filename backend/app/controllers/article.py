@@ -8,39 +8,60 @@ from app.models.article import Article
 from app.models.user import User
 from uuid import uuid4
 from pony.orm import select
+from werkzeug.utils import secure_filename
+from app import allowedextensions, uploadFolderContents
+import os
+
+
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedextensions
 
 
 @jwt_required()
 def createArticle():
     try:
-        jsonbody = request.json
-        data = requestMapping.content(jsonbody)
+        currentUser = get_jwt_identity()
+        
+        jsonBody = request.form
+        data = requestMapping.content(jsonBody)
         result = Checker(requestStruct.content(), soft=True).validate(data)
-
-        if jsonbody["title"] == "" or jsonbody["contentBody"] == "" or jsonbody["datePublished"] == "":
+        if jsonBody["title"] == "" or jsonBody["contentBody"] == "" or jsonBody["datePublished"] == "":
             response = {
                 "Message": "Title, Content, and Date Published Must be Filled"
             }
             return responseHandler.badRequest(response)
+        
+        file = request.files.get('img')
+        if not file or file.name == "":
+            picfilename = ""
 
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            picfilename = currentUser['idUser'] + '_' + filename
+            file.save(os.path.join(uploadFolderContents, picfilename))
+        
+
+        path = os.path.join(uploadFolderContents, picfilename)
         uuidContent = str(uuid4())
         content = Content(id_content=uuidContent,
                           title=result["title"],
                           subtitle=result["subtitle"],
-                          img=result["img"],
+                          img=picfilename,
                           captions=result["captions"],
                           contentBody=result["contentBody"],
                           datePublished=result["datePublished"])
 
         uuidArticle = str(uuid4())
-        currentUser = get_jwt_identity()
         print(content.id_content)
 
         article = Article(idArticle=uuidArticle,
                           user=currentUser["idUser"],
                           content=content.id_content)
 
+
         data = {
+            "idArticle": uuidArticle,
             "id_content": content.id_content,
             "title": content.title,
             "subtitle": content.subtitle,
@@ -54,6 +75,7 @@ def createArticle():
             "Message": "Article Created"
         }
         return responseHandler.ok(response)
+
     except Exception as err:
         response = {
             "Error": str(err)
@@ -90,23 +112,24 @@ def readArticle(id):
     except Exception as err:
         return str(err), HTTPStatus.BAD_GATEWAY
 
+
 @jwt_required()
 def updateArticle(id):
     try:
         currentUser = get_jwt_identity()
         # select semua id content by username
         print(currentUser["username"])
-        selectAllIdContent = select(str(a.content) for a in Article 
-                                                   for u in a.user
-                                                   if u.username == currentUser["username"])[:]
+        selectAllIdContent = select(str(a.content) for a in Article
+                                    for u in a.user
+                                    if u.username == currentUser["username"])[:]
         print(selectAllIdContent)
         if id not in selectAllIdContent:
             response = {
                 "message": "Article Not Found"
             }
             return responseHandler.badRequest(response)
-              
-        jsonbody = request.json
+
+        jsonbody = request.form
         data = requestMapping.content(jsonbody)
         result = Checker(requestStruct.content(), soft=True).validate(data)
 
@@ -115,15 +138,24 @@ def updateArticle(id):
                 "Message": "Title, Content, and Date Publised Must be Filled"
             }
             return responseHandler.badRequest(response)
-        
+
+        file = request.files.get('img')
+        if not file or file.name == "":
+            picfilename = ""
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            picfilename = currentUser['idUser'] + '_' + filename
+            file.save(os.path.join(uploadFolderContents, picfilename))
+
         content = Content[id]
         content.title = result["title"]
         content.subtitle = result["subtitle"]
-        content.img = result["img"]
+        content.img = "halo"
         content.captions = result["captions"]
         content.contentBody = result["contentBody"]
         content.datePublished = result["datePublished"]
-        
+
         data = {
             "id_content": content.id_content,
             "title": content.title,
@@ -141,15 +173,17 @@ def updateArticle(id):
     except Exception as err:
         return str(err), HTTPStatus.BAD_GATEWAY
 
+
 @jwt_required()
 def deleteArticle(id):
     try:
         currentUser = get_jwt_identity()
         # select semua id content by username
         print(currentUser["username"])
-        selectAllIdContent = select(str(a.content) for a in Article 
-                                                   for u in a.user
-                                                   if u.username == currentUser["username"])[:]
+        selectAllIdContent = select(str(a.content) for a in Article
+                                    for u in a.user
+                                    if u.username == currentUser["username"])[:]
+
         if id not in selectAllIdContent:
             response = {
                 "message": "Article Not Found"

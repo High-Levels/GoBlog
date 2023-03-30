@@ -48,3 +48,10 @@ def like(jsonBody):
         "like": jsonBody["like"]
     }
     return data
+
+def comment(jsonBody):
+    data = {
+        "commentBody": jsonBody["commentBody"],
+        "dateComment": jsonBody["dateComment"]
+    }
+    return data

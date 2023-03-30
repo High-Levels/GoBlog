@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import auth,user,category,tag, article, articleLikes
+from app.controllers import auth,user,category,tag, article, articleLikes, comment
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
@@ -33,8 +33,8 @@ app.route('/list/articles', methods=["GET"])(article.readAllArticle)
 
 
 # Comment
-# app.route('/create/comment', methods=["POST"])(comment.createComment)
-# app.route('/delete/comment/<id>', methods=["DELETE"])(comment.deleteComment)
+app.route('/create/comment', methods=["POST"])(comment.createComment)
+app.route('/delete/comment/<id>', methods=["DELETE"])(comment.deleteComment)
 
 
 # Like

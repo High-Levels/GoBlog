@@ -78,3 +78,10 @@ def like():
         "like": bool
     }
     return schema
+
+def comment():
+    schema = {
+        "commentBody": str,
+        "dateComment": str
+    }
+    return schema
