@@ -1,7 +1,7 @@
 from flask_jwt_extended import jwt_required,get_jwt_identity
 from flask import request,jsonify
 from json_checker import Checker
-from app import responseHandler,requestMapping,requestStruct,db,email_regex,allowedextensions,uploadFolderUsers
+from app import responseHandler,requestMapping,requestStruct,db,email_regex,mail
 import os,hashlib
 from uuid import uuid4
 from werkzeug.utils import secure_filename
@@ -10,9 +10,18 @@ from app.models.user import User
 from datetime import date,datetime
 from cloudinary.uploader import upload
 import cloudinary
+from flask_mail import Message
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedextensions
+
+def sendEmail(email,id):
+    sendMail = Message(
+                 subject = "Activate Your Account",
+                 sender = 'upgradelvel@gmail.com',
+                 recipients = [email],
+                 body= f"Activate Your Account here : http://127.0.0.1:5000/activate/{id}"
+            )
+    return sendMail
+
 
 def createUser():
     try:
@@ -33,7 +42,10 @@ def createUser():
         elif email_regex.match(result['email']):
             hashpassword = (hashlib.md5((result['password']+ os.getenv("SALT_PASSWORD")).encode())).hexdigest()
             #CREATE
-            User(idUser =str(uuid4()),username = result['username'],email = result['email'], password = hashpassword,dateRegister = datetime.now())
+            idUser = str(uuid4())
+            User(idUser = idUser,username = result['username'],email = result['email'], password = hashpassword,dateRegister = datetime.now(), isActivated = False)
+            sendMail = sendEmail(result['email'],idUser)
+            mail.send(sendMail)
             response = {
                     "Data": jsonBody,
                     "Message": "Data Created"
@@ -49,7 +61,20 @@ def createUser():
         response ={
                 "Error": str(err)
             }
-        return responseHandler.badGateway(response)   
+        return responseHandler.badGateway(response)
+
+def activateUser(id):
+    try:
+        User[id].set(isActivated = True)
+        response = {
+            "Message": "Account is Activated"
+        }
+        return responseHandler.ok(response)
+    except Exception as err:
+        response = {
+            "Error": str(err)
+        }
+        return responseHandler.badGateway(response)
     
 @jwt_required()
 def readUser(id):                     
@@ -101,7 +126,7 @@ def updateUser(id):
             if email_regex.match(result['email']):
                 #user = select(a for a in User if str(a.idUser) is currentUser['idUser'])[:]
                 cloudinary.uploader.upload(uploadFile,
-                                               folder = "profile/",
+                                               folder = "profiles/",
                                                public_id = "profile"+"_"+currentUser['idUser'],
                                                overwrite = True,
                                                width = 250,

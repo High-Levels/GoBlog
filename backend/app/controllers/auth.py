@@ -4,26 +4,33 @@ from flask import jsonify,request
 import flask
 import hashlib,os
 from flask_jwt_extended import create_refresh_token,create_access_token,set_access_cookies,get_jwt_identity,jwt_required,unset_jwt_cookies,unset_access_cookies,set_refresh_cookies,unset_refresh_cookies
-
+from app.models.user import User
+from pony.orm import select
 def login():
     try:
         jsonBody = request.json
         hashpassword = hashlib.md5((jsonBody['password']+os.getenv("SALT_PASSWORD")).encode())
-        user = db.select(f"select id_user,username from tbl_user where username = '{jsonBody['username']}' and password = '{hashpassword.hexdigest()}' ")
-        for i in user:
-            userAuth = {
-                "idUser": i[0],
-                "username": i[1]
+        user = select(a for a in User if a.username is jsonBody['username'] and a.password is hashpassword.hexdigest())[:]
+        if not user:
+            response ={
+                "Message": "Username / Password is invalid"
             }
-        if user:
-            accessToken = create_access_token(identity=userAuth,fresh=True)
-            refreshToken = create_refresh_token(identity=userAuth)
-            response = jsonify({
-                "accessToken": accessToken,
-                "Message": "Login Success"})
-            set_refresh_cookies(response, refreshToken)
-            set_access_cookies(response, accessToken)
-            return response
+            return responseHandler.badRequest(response)
+        elif user:
+            currentUser = user[0].to_dict()
+            if currentUser['isActivated'] == True:
+                accessToken = create_access_token(identity=currentUser,fresh=True)
+                refreshToken = create_refresh_token(identity=currentUser)
+                response = jsonify({
+                    "accessToken": accessToken,
+                    "refreshToken": refreshToken,
+                    "Message": "Login Success"})
+                return response
+            else:
+                response ={
+                    "Message": "Please Activate your Email"
+            }
+            return responseHandler.badRequest(response)
         else:
             response ={
                 "Message": "Username / Password is invalid"

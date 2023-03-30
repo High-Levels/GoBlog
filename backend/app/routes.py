@@ -10,6 +10,7 @@ app.route('/register',methods=['POST'])(user.createUser)
 app.route('/profile/<id>',methods=['GET'])(user.readUser)
 app.route('/update/profile/<id>',methods=['PATCH'])(user.updateUser)
 app.route('/delete/profile/<id>',methods=['DELETE'])(user.deleteUser)
+app.route('/activate/<id>',methods=['GET'])(user.activateUser)
 
 
 #CATEGORY

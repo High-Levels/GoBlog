@@ -14,6 +14,7 @@ class User(db.Entity):
     phoneNumber = Optional(str, column = "phone_number",nullable = True)
     dateRegister = Required(date,column = 'date_register')
     picture = Optional(str, nullable = True)
+    isActivated = Required(bool)
     article = Set('Article')
     comment = Set('Comment')
     like = Set('Like')

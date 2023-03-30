@@ -7,3 +7,4 @@ Flask-Cors == 3.0.10
 gevent == 22.10.2 
 json-checker == 2.0.0 
 cloudinary == 1.32.0
+Flask-Mail == 0.9.1 

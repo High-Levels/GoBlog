@@ -4,6 +4,7 @@ from .models._base import db
 import re,os
 from flask_jwt_extended import JWTManager
 import cloudinary
+from flask_mail import Mail
 
 
 
@@ -28,9 +29,17 @@ uploadFolderContents = app.config['UPLOAD_FOLDER_USERS']
 cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
     api_secret=os.getenv('API_SECRET'))
 
+app.config['MAIL_SERVER'] = "smtp.gmail.com"
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = "upgradelvel@gmail.com"
+app.config['MAIL_PASSWORD'] = "ftokyweuyhcgkyia"
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
 
 
 Pony(app)
+mail = Mail(app)
 
 
 from app import routes
