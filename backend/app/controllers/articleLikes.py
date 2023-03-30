@@ -88,12 +88,5 @@ def updateLike(id):
             "Data": data
         }
         return responseHandler.ok(response)
-
-        
-        
-        response = {
-            "Data": data
-        }
-        return responseHandler.ok(response)
     except Exception as err:
         return str(err), HTTPStatus.BAD_GATEWAY

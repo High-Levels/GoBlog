@@ -143,18 +143,20 @@ def updateUser(id):
             # print(a[0].idUser)
             # check = User.get(username = result['username'] and select(), email = result['email'] and select(a for a in User if str(a.idUser) != currentUser['idUser']))
             # print(check)
-            checkUsername = db.select(f"select username from tbl_user where username = '{result['username']}' and username != (select username from tbl_user where id_user = '{currentUser['idUser']}')")
-            checkEmail = db.select(f"select email from tbl_user where email = '{result['email']}' and email != (select email from tbl_user where id_user = '{currentUser['idUser']}')")
-            if checkUsername:
-                response = {
-                    "Message": "User is exist"
-                }
-                return responseHandler.badRequest(response)
-            elif checkEmail:
-                response = {
-                    "Message": "Email is exist"
-                }
-                return responseHandler.badRequest(response)
+            if currentUser["username"] != result["username"]:
+                checkUsername = db.select(f"select username from tbl_user where username = '{result['username']}' and username != (select username from tbl_user where id_user = '{currentUser['idUser']}')")
+                if checkUsername:
+                    response = {
+                        "Message": "User is exist"
+                    }
+                    return responseHandler.badRequest(response)
+            if currentUser["email"] != result["email"]:
+                checkEmail = db.select(f"select email from tbl_user where email = '{result['email']}' and email != (select email from tbl_user where id_user = '{currentUser['idUser']}')")
+                if checkEmail:
+                    response = {
+                        "Message": "Email is exist"
+                    }
+                    return responseHandler.badRequest(response)
             if result['username'] =="" or result['email'] =="" or result['password'] =="" or result['name'] =="" or result['gender'] =="" or result['address'] == "" or result['birth'] =="" or result['phoneNumber'] =="":
                 response = {
                     "Message": "All Data Must be Filled"
