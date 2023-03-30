@@ -8,6 +8,8 @@ from werkzeug.utils import secure_filename
 from pony.orm import select
 from app.models.user import User
 from datetime import date,datetime
+from cloudinary.uploader import upload
+import cloudinary
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowedextensions
@@ -69,7 +71,7 @@ def readUser(id):
 def updateUser(id):
     currentUser = get_jwt_identity()
     if currentUser['idUser'] == id:
-        files = request.files.getlist('picture')
+        uploadFile = request.files['picture']
         data = requestMapping.userUpdate(request.form)
         result = Checker(requestStruct.userUpdate(),soft=True).validate(data)
         hashpass = (hashlib.md5((result['password']+os.getenv("SALT_PASSWORD")).encode())).hexdigest()
@@ -97,37 +99,31 @@ def updateUser(id):
                 }
                 return responseHandler.badRequest(response)
             if email_regex.match(result['email']):
-                user = select(a for a in User if str(a.idUser) is currentUser['idUser'])[:]
-                for i in files:
-                    if i and allowed_file(i.filename):
-                        try:
-                            os.remove(os.path.join(uploadFolderUsers, user[0].picture))
-                        except:
-                            print("error")
-                        filename = secure_filename(i.filename)
-                        picfilename = currentUser['idUser'] + '_' + filename
-                        i.save(os.path.join(uploadFolderUsers,picfilename))
-                        success = True
-                    if success:
+                #user = select(a for a in User if str(a.idUser) is currentUser['idUser'])[:]
+                cloudinary.uploader.upload(uploadFile,
+                                               folder = "profile/",
+                                               public_id = "profile"+"_"+currentUser['idUser'],
+                                               overwrite = True,
+                                               width = 250,
+                                               height = 250,
+                                               grafity = "auto",
+                                               radius = "max",
+                                               crop = "fill"
+                                               )
+                success = True
+                if success:
                         result = Checker(requestStruct.userUpdate(),soft=True).validate(data)
-                        User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'],picture = picfilename)
+                        User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'],picture = "profile"+"_"+currentUser['idUser'])
                         response = {
                             "Data": result,
                             "Message": "Success Update User"
                         }
                         return responseHandler.ok(response)
-                    elif not success:
+                elif not success:
                         response = { 
                             "Message": "File is not Valid"
                         }
                         return responseHandler.badRequest(response)
-                if not files:
-                    User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'])
-                    response = {
-                        "Data": result,
-                        "Message": "Success Update User"
-                    }
-                    return responseHandler.ok(response)
             response = {
                 "Message": "Email not Valid"
             }

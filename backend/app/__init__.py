@@ -3,6 +3,7 @@ from pony.flask import Pony
 from .models._base import db
 import re,os
 from flask_jwt_extended import JWTManager
+import cloudinary
 
 
 
@@ -22,6 +23,10 @@ app.config['ALLOWED_EXTENSIONS'] = os.getenv("ALLOWED_EXTENSION")
 allowedextensions = app.config['ALLOWED_EXTENSIONS']
 uploadFolderBooks = app.config['UPLOAD_FOLDER_BOOKS']
 uploadFolderUsers = app.config['UPLOAD_FOLDER_USERS']
+uploadFolderContents = app.config['UPLOAD_FOLDER_USERS']
+
+cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'), 
+    api_secret=os.getenv('API_SECRET'))
 
 
 
