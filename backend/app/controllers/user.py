@@ -9,16 +9,20 @@ from pony.orm import select
 from app.models.user import User
 from datetime import date,datetime
 from cloudinary.uploader import upload
-import cloudinary
+import cloudinary,random,string
 from flask_mail import Message
 
+def randomPassword():
+    letters = string.ascii_lowercase
+    newPassword = ''.join(random.choice(letters) for i in range(8))
+    return newPassword
 
-def sendEmail(email,id):
+def sendEmail(email,messageBody,subjectBody):
     sendMail = Message(
-                 subject = "Activate Your Account",
+                 subject = subjectBody,
                  sender = 'upgradelvel@gmail.com',
                  recipients = [email],
-                 body= f"Activate Your Account here : http://127.0.0.1:5000/activate/{id}"
+                 body= messageBody
             )
     return sendMail
 
@@ -44,7 +48,7 @@ def createUser():
             #CREATE
             idUser = str(uuid4())
             User(idUser = idUser,username = result['username'],email = result['email'], password = hashpassword,dateRegister = datetime.now(), isActivated = False)
-            sendMail = sendEmail(result['email'],idUser)
+            sendMail = sendEmail(result['email'],f"Activate Your Account here : http://127.0.0.1:5000/activate/{idUser}","Activate Your Account")
             mail.send(sendMail)
             response = {
                     "Data": jsonBody,
@@ -61,6 +65,39 @@ def createUser():
         response ={
                 "Error": str(err)
             }
+        return responseHandler.badGateway(response)
+
+@jwt_required()  
+def forgotPassword(id):
+    try:
+        newPassword = randomPassword()
+        currentUser = get_jwt_identity()
+        hashpass = (hashlib.md5((newPassword+os.getenv("SALT_PASSWORD")).encode())).hexdigest()
+        id = currentUser['idUser']
+        sendMail = sendEmail(currentUser['email'],f"Your New Password is {newPassword}","Forgot Password")
+        mail.send(sendMail)
+        User[id].set(password = hashpass)
+        response = {
+             "Message": "Email Send, Please Check Your Email"
+        }
+        return responseHandler.ok(response)
+    except Exception as err:
+        response = {
+             "Error": str(err)
+        }
+        return responseHandler.badGateway(response)
+  
+def resetPassword(id):
+    try:
+        
+        response = {
+             "Message": "Email Send, Please Check Your Email"
+        }
+        return responseHandler.ok(response)
+    except Exception as err:
+        response = {
+             "Error": str(err)
+        }
         return responseHandler.badGateway(response)
 
 def activateUser(id):

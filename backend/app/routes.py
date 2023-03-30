@@ -11,6 +11,7 @@ app.route('/profile/<id>',methods=['GET'])(user.readUser)
 app.route('/update/profile/<id>',methods=['PATCH'])(user.updateUser)
 app.route('/delete/profile/<id>',methods=['DELETE'])(user.deleteUser)
 app.route('/activate/<id>',methods=['GET'])(user.activateUser)
+app.route('/forgot/<id>',methods=['GET'])(user.forgotPassword)
 
 
 #CATEGORY
