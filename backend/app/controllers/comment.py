@@ -64,23 +64,41 @@ def createComment(id):
 def deleteComment(id):
     try:
         currentUser = get_jwt_identity()
-        # Select semua id comment milik username
-        selectAllIdComment = select(str(c.idComment) for c in Comment
-                                                for u in c.user
-                                                if u.username == currentUser["username"])
-        
-        if id not in selectAllIdComment:
+        selectComment = select(c for c in Comment if c.idComment == id)[:1]
+        if len(selectComment) == 0:
             response = {
-                "message": "Comment Not Found"
+            "Message": f"Comment with id {id} not found"
             }
-            return responseHandler.badRequest(response)
-        
-        Comment[id].delete()
-
-        response = {
-            "Message": "Comment Deleted"
-        }
-        return responseHandler.ok(response)
+            return responseHandler.badGateway(response)
+        selectComment = selectComment[0]
+        selectCommentArticle = select(a for a in Article if a.idArticle == selectComment.article)[:1]
+        # jika artikel tempat komen berada sudah dihapus
+        if len(selectCommentArticle) == 0:
+            if selectComment.user == currentUser["idUser"]:          
+                Comment[id].delete()
+                response = {
+                    "Message": "Comment Deleted"
+                }
+                return responseHandler.ok(response)
+            else:
+                response = {
+                    "Message": "You cannot delete this comment"
+                }
+                return responseHandler.forbidden(response)
+        else:
+            selectCommentArticle = selectCommentArticle[0]
+            # comment dapat dihapus oleh yang mengepost comment atau pemilik artikel tempat comment berada
+            if selectComment.user == currentUser["idUser"] or selectCommentArticle.user == currentUser["idUser"]:
+                Comment[id].delete()
+                response = {
+                    "Message": "Comment Deleted"
+                }
+                return responseHandler.ok(response)
+            else:
+                response = {
+                    "Message": "You cannot delete this comment"
+                }
+                return responseHandler.forbidden(response)
     except Exception as err:
         response = {
             "Message": str(err)

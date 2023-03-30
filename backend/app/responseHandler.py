@@ -9,3 +9,6 @@ def badRequest(data):
 
 def badGateway(data):
     return make_response(jsonify(data)),HTTPStatus.BAD_GATEWAY.value
+
+def forbidden(data):
+    return make_response(jsonify(data)),HTTPStatus.FORBIDDEN.value
