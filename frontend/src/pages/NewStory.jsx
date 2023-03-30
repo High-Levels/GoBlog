@@ -10,6 +10,8 @@ function NewStory() {
     setContent(value);
   }
 
+  const handlePublish = () => {console.log(content); console.log(typeof(content));}
+
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
@@ -19,7 +21,7 @@ function NewStory() {
     <div className="container m-5">
       <div className="row">
         <div className="col">
-          <Button label={"Publish"} variant={"success"} />
+          <Button label={"Publish"} variant={"success"} onClick={handlePublish} />
           <ReactQuill
             placeholder="Type your content here ..."
             ref={inputRef}
@@ -45,6 +47,7 @@ function NewStory() {
           />
         </div>
       </div>
+      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 }
