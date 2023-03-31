@@ -4,9 +4,15 @@
   font-size: 70px;
 }
 /* navbar */
-.navbar{
-  transition: background-color 0.5 ease-in-out;
+ /* Set button search width to 100% on mobile devices */
+ @media (max-width: 576px) {
+  .btn {
+    width: 100%;
+  }
 }
-.navbar.scrolled{
-  background-color: aqua;
+/* Hide input search on mobile devices */
+@media (max-width: 991.98px) {
+  .d-lg-block {
+    display: none !important;
+  }
 }

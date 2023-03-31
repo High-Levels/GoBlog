@@ -4,68 +4,45 @@ import GoblogPict from '../assets/images/Goblog.jpeg';
 import Avatar from './Avatar';
 import Image1 from '../assets/images/avatar.png';
 import '../style/index.css';
+import { useNavigate } from 'react-router-dom';
 
 
-// $(document).ready(function(){
-//   $(window).scroll(function(){
-//     if ($(this).scrollTop()>50){
-//       $('.navbar').addClass('scrolled');
-//     } else{
-//       $('navbar').removeClass('scrolled')
-//     }
-//   });
-// });
+
 const Navbar = () => {
+  // const navigasi = useNavigate();
   return (
     <div>
       <nav className="navbar navbar-expand-sm navbar-light bg-light  fixed-top">
         <div className="container-fluid">
           <a className="navbar-brand" href="/"><img src={GoblogPict} style={{ width: "150px" }} /></a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="mynavbar">
-            <ul className="navbar-nav me-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="/">Home</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/login">Login</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="/register"> <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-chat-right-quote"
-                viewBox="0 0 16 16"
-              >
-                <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z" />
-                <path d="M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z" />
-              </svg></a>
-              </li>
-            </ul>
-            <form className="d-flex">
-              <input className="form-control me-2" type="text" placeholder="Search" />
-              <Button
-                label="Search"
-                variant="warning"
-              />
-            </form>
-            <div className='dropdown'>
-              <button className='btn dropdown-toggle' type='button' id='dropdownMenuButton' data-bs-toggle="dropdown" aria-expanded="false">
-                <Avatar src={Image1} height={30} className="rounded-5"/>
-              </button>
-              <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-                <li><a className='dropdown-item' href='#'>test</a></li>
-                <li><a className='dropdown-item' href='#'>test</a></li>
-                <li><a className='dropdown-item' href='#'>test</a></li>
-              </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <div class="input-group">
+              <a href='/login' className='btn'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                </svg>
+              </a>
+              <input class="form-control mr-sm-2 d-none d-lg-block" placeholder="Search" />
             </div>
+          </form>
+          <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
+              <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
+            </svg>
+          </div>
+          <div className='dropdown'>
+            <button className='btn dropdown-toggle' type='button' id='dropdownMenuButton' data-bs-toggle="dropdown" aria-expanded="false">
+              <Avatar src={Image1} height={30} className="rounded-5" />
+            </button>
+            <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
+              <li><a className='dropdown-item' href='/register'>Registrasi</a></li>
+              <li><a className='dropdown-item' href='/login'>Login</a></li>
+              <li><a className='dropdown-item' href='/'>Setting</a></li>
+            </ul>
           </div>
         </div>
       </nav>
+      <ul id="searchResult"></ul>
     </div>
   )
 }
