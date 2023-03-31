@@ -36,6 +36,7 @@ app.route('/read/article/<id>', methods=["GET"])(article.readArticle)
 app.route('/update/article/<id>', methods=["PUT"])(article.updateArticle)
 app.route('/delete/article/<id>', methods=["DELETE"])(article.deleteArticle)
 app.route('/list/articles', methods=["GET"])(article.readAllArticle)
+app.route('/list/userRecentArticles/<id>', methods=["GET"])(article.userRecentArticle)
 
 
 # Comment

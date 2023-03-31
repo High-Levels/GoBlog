@@ -62,3 +62,10 @@ def comment(jsonBody):
         "dateComment": jsonBody["dateComment"]
     }
     return data
+
+def userRecentArticle(jsonBody):
+    data = {
+        "maxArticlePerPage": jsonBody["maxArticlePerPage"],
+        "page": jsonBody["page"]
+    }
+    return data
