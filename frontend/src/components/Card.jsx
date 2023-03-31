@@ -34,7 +34,7 @@ function Card() {
 
   return (
     <div className="container">
-      <div className="card p-3" style={{ maxWidth: "700px" }}>
+      <div className="card p-3 shadow" style={{ maxWidth: "700px" }}>
         <div className="row">
           <div className="col d-flex align-items-center mb-2">
             <Avatar src={Image1} height={30} />
