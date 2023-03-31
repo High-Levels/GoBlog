@@ -10,7 +10,8 @@
 }
 
 .first_line,
-.second_line {
+.second_line,
+.third_line {
   white-space: nowrap; 
   overflow: hidden; 
   margin: 0.5rem auto;
@@ -40,8 +41,8 @@
 
   .third_line {
     border-right: 2px solid yellow;
-    animation: typewriter_2 5s steps(31) 1s 1 normal both,
-      second_cursor 20ms steps(31) infinite;
+    animation: typewriter_3 5s steps(31) 1s 1 normal both,
+      third_cursor 20ms steps(31) infinite;
     -webkit-animation-delay: 7s;
     animation-delay: 14s;
   }
@@ -87,7 +88,7 @@
       border-right-color:yellow;
     }
   }
-  @keyframes second_cursor{
+  @keyframes third_cursor{
     from {
       border-right-color: yellow;
     }

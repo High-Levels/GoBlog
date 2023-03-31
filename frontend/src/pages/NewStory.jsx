@@ -9,11 +9,13 @@ import { useNavigate } from "react-router-dom";
 function NewStory() {
   const [content, setContent] = useState("input type here");
   const {Header, Article} = content;
-
+  
   const navigate = useNavigate();
-
+  
   function handleContentChange(value) {
+    
     setContent(value);
+    console.log(content)
   }
 
   // const handlePublish = () => {
@@ -73,7 +75,7 @@ function NewStory() {
     toolbar: [  
       ["bold", "italic", "underline", "strike"],
       [{ color: [] }, { background: [] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }], 
+      [{ 'header': [1, 2, 3, 4, 5, 6, false]}, Header], 
       [{ script: "sub" }, { script: "super" }],
       ["blockquote"],
       [{ list: "ordered" }, { list: "bullet" }],
