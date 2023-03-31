@@ -12,10 +12,6 @@ from cloudinary.uploader import upload
 import cloudinary,random,string
 from flask_mail import Message
 
-def randomPassword():
-    letters = string.ascii_lowercase
-    newPassword = ''.join(random.choice(letters) for i in range(8))
-    return newPassword
 
 def sendEmail(email,messageBody,subjectBody):
     sendMail = Message(
@@ -66,19 +62,16 @@ def createUser():
                 "Error": str(err)
             }
         return responseHandler.badGateway(response)
-
-@jwt_required()  
-def forgotPassword(id):
+    
+def forgotPassword():
     try:
-        newPassword = randomPassword()
-        currentUser = get_jwt_identity()
-        hashpass = (hashlib.md5((newPassword+os.getenv("SALT_PASSWORD")).encode())).hexdigest()
-        id = currentUser['idUser']
-        sendMail = sendEmail(currentUser['email'],f"Your New Password is {newPassword}","Forgot Password")
+        email = request.json['email']
+        selectById = select(a for a in User if a.email is email)[:]
+        id = id[0].idUser
+        sendMail = sendEmail(email,f"http://127.0.0.1:5000//changepassword{id}","Forgot Password")
         mail.send(sendMail)
-        User[id].set(password = hashpass)
         response = {
-             "Message": "Email Send, Please Check Your Email"
+            "Message": "Check Your Email to Change Your Password"
         }
         return responseHandler.ok(response)
     except Exception as err:
@@ -86,17 +79,40 @@ def forgotPassword(id):
              "Error": str(err)
         }
         return responseHandler.badGateway(response)
-  
-def resetPassword(id):
+    
+def getChangePassword(id):
     try:
-        
+        readById = User.get(idUser = id)
+        data = readById.to_dict()
         response = {
-             "Message": "Email Send, Please Check Your Email"
+            "Data": data
         }
         return responseHandler.ok(response)
     except Exception as err:
         response = {
-             "Error": str(err)
+            "Error": str(err)
+        }
+        return responseHandler.badGateway(response)
+
+def setChangePassword(id):
+    try:
+        jsonBody = request.json
+        data = requestMapping.forgetPassword(jsonBody)
+        result = Checker(requestStruct.forgetPassword(),soft = True).validate(data)
+        if result['password'] == result['password2']:
+            hashpass = (hashlib.md5((result['password']+os.getenv("SALT_PASSWORD")).encode())).hexdigest()
+            User[id].set(password = hashpass)
+            response = {
+                "Message": "Password was change"
+            }
+            return responseHandler.ok(response)
+        response = {
+            "Message": "Password not Match"
+        }
+        return responseHandler.badRequest(response)
+    except Exception as err:
+        response = {
+            "Error": str(err)
         }
         return responseHandler.badGateway(response)
 

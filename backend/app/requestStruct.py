@@ -19,6 +19,13 @@ def userUpdate():
     }
     return schema
 
+def forgetPassword():
+    schema = {
+        "password": str,
+        "password2": str
+    }
+    return schema
+
 
 def Books():
     schema = { 

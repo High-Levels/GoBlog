@@ -19,6 +19,13 @@ def userUpdate(jsonBody):
     }
     return data
 
+def forgetPassword(jsonBody):
+    data = {
+        "password": jsonBody['password'],
+        "password2": jsonBody['password2']
+    }
+    return data
+
 
 def Category(jsonBody):
     data = {
