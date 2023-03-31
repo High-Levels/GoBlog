@@ -6,10 +6,10 @@ from flask_jwt_extended import JWTManager
 import cloudinary
 from flask_mail import Mail
 
-
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 JWTManager(app)
 
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')

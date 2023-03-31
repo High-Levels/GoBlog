@@ -18,7 +18,7 @@ def login():
             return responseHandler.badRequest(response)
         elif user:
             currentUser = user[0].to_dict()
-            if currentUser['isActivated'] == True:
+            if currentUser['isActivated'] == False:
                 accessToken = create_access_token(identity=currentUser,fresh=True)
                 refreshToken = create_refresh_token(identity=currentUser)
                 response = jsonify({

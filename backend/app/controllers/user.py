@@ -44,8 +44,8 @@ def createUser():
             #CREATE
             idUser = str(uuid4())
             User(idUser = idUser,username = result['username'],email = result['email'], password = hashpassword,dateRegister = datetime.now(), isActivated = False)
-            sendMail = sendEmail(result['email'],f"Activate Your Account here : http://127.0.0.1:5000/activate/{idUser}","Activate Your Account")
-            mail.send(sendMail)
+            # sendMail = sendEmail(result['email'],f"Activate Your Account here : http://127.0.0.1:5000/activate/{idUser}","Activate Your Account")
+            # mail.send(sendMail)
             response = {
                     "Data": jsonBody,
                     "Message": "Data Created"

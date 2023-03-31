@@ -6,7 +6,7 @@ import ImageRegister from '../assets/images/auth.jpg'
 import '../style/index.css'
 import Particle from '../components/Particles.BG'
 import { useNavigate } from 'react-router-dom'
-import { registerUser } from '../services/AuthRegister'
+import { registerUser } from '../services/Auth'
 
 const Register = () => {
   // deklarasi hooks register
