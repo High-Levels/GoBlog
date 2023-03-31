@@ -1,99 +1,110 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Button from '../components/Button'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from "react";
+import Button from "../components/Button";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function NewStory() {
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function handleContentChange(value) {
-    setContent(value)
+    setContent(value);
   }
 
-  const handlePublish = () => {
-    console.log(content)
-    console.log(typeof content)
-  }
+  // const handlePublish = () => {
+  //   console.log(content);
+  //   console.log(typeof content);
+  // };
 
-  const inputRef = useRef(null)
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    inputRef.current.focus()
-    document.title = 'New Story'
-  }, [])
+    document.title = "New Story";
+    inputRef.current.focus();
+    if (inputRef.current) {
+      const input = inputRef.current.getEditor();
+
+      const headingPlaceholder = "<h2><b>Judul Artikel</b></h2>";
+      const paragraphPlaceholder = "<p>Ketikkan konten Anda di sini ...</p>";
+
+      input.root.innerHTML = headingPlaceholder + paragraphPlaceholder;
+
+      input.formatLine(0, 1, { header: 2 });
+
+      input.on("text-change", () => {
+        const isEmpty = input.getText().trim().length === 0;
+        if (isEmpty) {
+          input.root.innerHTML = headingPlaceholder + paragraphPlaceholder;
+          input.formatLine(0, 1, { header: 2 });
+        }
+      });
+
+      input.root.addEventListener("click", () => {
+        const isEmpty = input.getText().trim().length === 0;
+        if (isEmpty) {
+          input.root.innerHTML = "";
+        }
+      });
+    }
+  }, []);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    // axios
-    //   .post(`url`, content)
-    //   .then((res) => {
-    //     console.log(res);
-
-    //     navigate(`endpoint`);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    console.log(content)
-  }
+    e.preventDefault();
+    //     axios
+    //       .post(`url`, content)
+    //       .then((res) => {
+    //         console.log(res);
+    //         alert("Artikel berhasil dipublish");
+    //         // setContent("");
+    //         navigate(`endpoint`);
+    //       })
+    // .catch((err) => {await
+    //         console.log(err);
+    //       });
+    //     console.log(content);
+  };
 
   const modules = {
     toolbar: [
-      [{ font: [] }],
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
+      ["bold", "italic", "underline", "strike"],
       [{ color: [] }, { background: [] }],
-      [{ script: 'sub' }, { script: 'super' }],
-      ['blockquote', 'code-block'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ indent: '-1' }, { indent: '+1' }, { align: [] }],
-      ['link', 'image'],
-      ['clean'],
+      [{ script: "sub" }, { script: "super" }],
+      ["blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      ["link", "image"],
+      ["clean"],
     ],
-  }
+  };
 
-  // const formats = [
-  //   "header",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "blockquote",
-  //   "list",
-  //   "bullet",
-  //   "align",
-  //   "color",
-  //   "background",
-  //   "link",
-  //   "image",
-  // ];
+  // const placeholder1 = "Title";
+  // const placeholder2 = "Type your content here...";
 
   return (
-    <div className='container m-5 mx-auto'>
-      <div className='row'>
-        <div className='col'>
+    <div className="container m-5 mx-auto">
+      <div className="row">
+        <div className="col">
           <form onSubmit={handleSubmit}>
-            <Button label='Publish' variant='success' type='submit' />
+            <Button label="Publish" variant="success" type="submit" />
             <ReactQuill
-              placeholder='Type your content here ...'
+              // placeholder1={placeholder1}
+              // placeholder2={placeholder2}
               ref={inputRef}
-              className='mt-3'
-              theme='snow'
+              className="mt-3"
+              theme="snow"
               value={content}
               onChange={handleContentChange}
               modules={modules}
-              // formats={formats}
             />
           </form>
           <div dangerouslySetInnerHTML={{ __html: content }}></div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default NewStory
+export default NewStory;
