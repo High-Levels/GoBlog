@@ -92,7 +92,6 @@ function NewStory() {
           <div dangerouslySetInnerHTML={{ __html: content }}></div>
         </div>
       </div>
-      <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   )
 }
