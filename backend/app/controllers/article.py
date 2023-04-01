@@ -227,8 +227,8 @@ def userRecentArticle(userId):
         jsonBody = request.form
         data = requestMapping.userRecentArticle(jsonBody)
         result = Checker(requestStruct.userRecentArticle(), soft=True).validate(data)
-        maxArticlePerPage = jsonBody["maxArticlePerPage"]
-        page = jsonBody["page"]
+        maxArticlePerPage = result["maxArticlePerPage"]
+        page = result["page"]
         if maxArticlePerPage == "":
             maxArticlePerPage = 10
         if page == "":

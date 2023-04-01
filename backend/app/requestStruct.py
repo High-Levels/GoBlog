@@ -99,3 +99,17 @@ def userRecentArticle():
         "page":int
     }
     return schema
+
+def userFriendRequest():
+    schema = {
+        "maxFriendRequestPerPage": int,
+        "page": int
+    }
+    return schema
+
+def userFriend():
+    schema = {
+        "maxFriendPerPage": int,
+        "page": int
+    }
+    return schema
