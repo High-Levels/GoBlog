@@ -241,7 +241,8 @@ def userRecentArticle(userId):
             }
             return responseHandler.badRequest(response)
         selectUserArticleOffset = (maxArticlePerPage*(page-1))
-        selectUserArticle = select(a for a in Article if a.user == userId).order_by(desc(Article.idArticle))[selectUserArticleOffset:maxArticlePerPage]
+        selectUserArticleMax = maxArticlePerPage + selectUserArticleOffset
+        selectUserArticle = select(a for a in Article if a.user == userId).order_by(desc(Article.idArticle))[selectUserArticleOffset:selectUserArticleMax]
         response = {
                 "Data" : {}
             }
