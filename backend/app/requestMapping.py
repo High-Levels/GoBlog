@@ -70,14 +70,14 @@ def userRecentArticle(jsonBody):
     }
     return data
 
-def userFriendRequest(jsonBody):
+def getUserFriendRequest(jsonBody):
     data = {
         "maxFriendRequestPerPage": jsonBody["maxFriendRequestPerPage"],
         "page": jsonBody["page"]
     }
     return data
 
-def userFriend(jsonBody):
+def getUserFriend(jsonBody):
     data = {
         "maxFriendPerPage": jsonBody["maxFriendPerPage"],
         "page": jsonBody["page"]

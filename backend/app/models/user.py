@@ -18,3 +18,7 @@ class User(db.Entity):
     article = Set('Article')
     comment = Set('Comment')
     like = Set('Like')
+    friendUserOne = Set('Friend', reverse="userOne")
+    friendUserTwo = Set('Friend', reverse="userTwo")
+    friendRequestSender = Set('FriendRequest', reverse="sender")
+    friendRequestRecipient = Set('FriendRequest', reverse="recipient")

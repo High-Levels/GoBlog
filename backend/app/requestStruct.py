@@ -100,14 +100,14 @@ def userRecentArticle():
     }
     return schema
 
-def userFriendRequest():
+def getUserFriendRequest():
     schema = {
         "maxFriendRequestPerPage": int,
         "page": int
     }
     return schema
 
-def userFriend():
+def getUserFriend():
     schema = {
         "maxFriendPerPage": int,
         "page": int

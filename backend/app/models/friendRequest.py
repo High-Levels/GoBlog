@@ -4,6 +4,6 @@ from pony.converting import str2datetime
 
 class FriendRequest(db.Entity):
     _table_ = "tbl_friend_request"
-    sender = Required(User, column = 'id_user')
-    recipient = Required(User, column = 'id_user')
-    dateFriendRequest = Required(datetime, column = "date_friend_request")
+    sender = Required(User,column='id_user_sender')
+    recipient = Required(User,column='id_user_recipient')
+    dateFriendRequest = Required(datetime,column="date_friend_request")
