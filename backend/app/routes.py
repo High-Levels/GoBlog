@@ -49,7 +49,7 @@ app.route('/update/like/<id>', methods=["POST"])(articleLikes.updateLike)
 app.route('/read/like/<id>', methods=["GET"])(articleLikes.readLike)
 
 # Friend
-app.route('/friend/List/')(friend.getUserFriend)
-app.route('/friendRequest/List/')(friend.getUserFriendRequest)
-app.route('/friendRequest/Send/<id>')(friend.sendFriendRequest)
-app.route('/friendRequest/Accept/<id>')(friend.acceptFriendRequest) 
+app.route('/friend/list/', methods=["POST"])(friend.getUserFriend)
+app.route('/friendRequest/list/outgoing/', methods=["POST"])(friend.getUserOutgoingFriendRequest)
+app.route('/friendRequest/send/<targetIdUser>', methods=["POST"])(friend.sendFriendRequest)
+app.route('/friendRequest/accept/<targetIdUser>', methods=["POST"])(friend.acceptFriendRequest) 

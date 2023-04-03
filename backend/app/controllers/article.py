@@ -224,7 +224,7 @@ def readAllArticle():
 
 def userRecentArticle(userId):
     try:
-        jsonBody = request.form
+        jsonBody = request.json
         data = requestMapping.userRecentArticle(jsonBody)
         result = Checker(requestStruct.userRecentArticle(), soft=True).validate(data)
         maxArticlePerPage = result["maxArticlePerPage"]
@@ -242,7 +242,8 @@ def userRecentArticle(userId):
             return responseHandler.badRequest(response)
         selectUserArticleOffset = (maxArticlePerPage*(page-1))
         selectUserArticleMax = maxArticlePerPage + selectUserArticleOffset
-        selectUserArticle = select(a for a in Article if a.user == userId).order_by(desc(Article.idArticle))[selectUserArticleOffset:selectUserArticleMax]
+        selectUserArticle = select(
+            a for a in Article for u in a.user if u.idUser == userId).order_by(desc(Article.idArticle))[selectUserArticleOffset:selectUserArticleMax]
         response = {
                 "Data" : {}
             }
