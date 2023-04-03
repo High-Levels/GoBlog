@@ -3,20 +3,45 @@ import Button from "../components/Button";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Gap from "../components/Gap";
-import axios from "axios";
+import axios, { AxiosHeaders } from "axios";
 import { useNavigate } from "react-router-dom";
 
 function NewStory() {
   const [content, setContent] = useState("input type here");
-  const {Header, Article} = content;
-  
+  const { title, article } = content;
+
   const navigate = useNavigate();
-  
+
   function handleContentChange(value) {
-    
+    const title = modules.toolbar.toString(() => title == [i]);
+    if(this.title != article);
     setContent(value);
-    console.log(content)
+    // const cursorPosition = e.quill.getSelection().index;
+    // this.quill.insertText(cursorPosition, "★");
+    // this.quill.setSelection(cursorPosition + 1);
+    console.log(title);
   }
+
+  // // Store accumulated changes
+  // let change = new Delta();
+  // quill.on("text-change", function (delta) {
+  //   change = change.compose(delta);
+  // });
+
+  // // Save periodically
+  // setInterval(function () {
+  //   if (change.length() > 0) {
+  //     console.log("Saving changes", change);
+  //     change = new Delta();
+  //   }
+  // }, 5 * 1000);
+
+  // // Check for unsaved data
+  // window.onbeforeunload = function () {
+  //   if (change.length() > 0) {
+  //     return "There are unsaved changes. Are you sure you want to leave?";
+  //   }
+  // };
 
   // const handlePublish = () => {
   //   console.log(content);
@@ -72,10 +97,10 @@ function NewStory() {
   };
 
   const modules = {
-    toolbar: [  
+    toolbar: [
       ["bold", "italic", "underline", "strike"],
       [{ color: [] }, { background: [] }],
-      [{ 'header': [1, 2, 3, 4, 5, 6, false]}, Header], 
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
       [{ script: "sub" }, { script: "super" }],
       ["blockquote"],
       [{ list: "ordered" }, { list: "bullet" }],
@@ -104,10 +129,9 @@ function NewStory() {
               onChange={handleContentChange}
               modules={modules}
             />
-            <Gap height={18}/>
+            <Gap height={18} />
             <Button label="Publish" variant="success" type="submit" />
           </form>
-     
         </div>
       </div>
     </div>
