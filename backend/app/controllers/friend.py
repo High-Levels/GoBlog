@@ -56,6 +56,53 @@ def getUserOutgoingFriendRequest():
         response["logMsg"] = str(e)
         print(e)
         return responseHandler.badGateway(response)
+    
+@jwt_required()
+def getUserIncomingFriendRequest():
+    response = {
+        "friendRequestList": [],
+        "error":False,
+        "logMsg": ""
+    }
+    try:
+        currentUser = get_jwt_identity()
+        requestJson = request.json
+        for key in requestStruct.getUserFriendRequest():
+            if key not in requestJson:
+                response["error"] = True
+                response["logMsg"] = f"Key \"{key}\" is not in request form"
+            elif requestJson[key] == "":
+                response["error"] = True
+                response["logMsg"] = f"Request form key \"{key}\" value is blank"
+        requestJsonDict = requestMapping.getUserFriendRequest(requestJson)
+        requestJsonVerified = Checker(requestStruct.getUserFriendRequest(),soft=True).validate(requestJsonDict)
+        maxFriendRequestPerPage = requestJsonVerified["maxFriendRequestPerPage"]
+        page = requestJsonVerified["page"]
+        maxFriendRequestPerPage = int(maxFriendRequestPerPage)
+        page = int(page)
+        if page <= 0:
+            response["error"] = True
+            response["logMsg"] = "Page must be higher or equal to 1"
+            return responseHandler.badRequest(response)
+        selectUserFriendRequestOffset = maxFriendRequestPerPage*(page-1)
+        selectUserFriendRequestMax = selectUserFriendRequestOffset + maxFriendRequestPerPage
+        selectUserFriendRequest = select(
+            fr for fr in FriendRequest if fr.recipient.idUser == uuid.UUID(currentUser["idUser"])
+            ).order_by(desc(FriendRequest.dateFriendRequest))[selectUserFriendRequestOffset:selectUserFriendRequestMax]
+        for fr in selectUserFriendRequest:
+            response["friendRequestList"].append(
+                {
+                    "sender": str(fr.sender.idUser), 
+                    "recipient": str(fr.recipient.idUser), 
+                    "dateFriendRequest": fr.dateFriendRequest
+                }
+                )
+        return responseHandler.ok(response)
+    except Exception as e:
+        response["error"] = True
+        response["logMsg"] = str(e)
+        print(e)
+        return responseHandler.badGateway(response)
 
 @jwt_required()
 def getUserFriend():
@@ -135,12 +182,18 @@ def sendFriendRequest(targetIdUser):
         }
         try:
             currentUser = get_jwt_identity()
+            
+            if targetIdUser == currentUser["idUser"]:
+                response["error"] = True
+                response["logMsg"] = "You cannot send friend request to yourself"
+                return responseHandler.badRequest(response)
             selectTargetUser = select(
             u for u in User if u.idUser == uuid.UUID(targetIdUser)
             )
             if len(selectTargetUser) == 0:
                 response["error"] = True
                 response["logMsg"] = "Target user does not exist"
+                return responseHandler.badRequest(response)
             response["targetIdUserExist"] = True
             selectFriendWithTargetUser = select(
             f for f in Friend if 
