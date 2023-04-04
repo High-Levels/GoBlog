@@ -19,21 +19,21 @@ const Comment = () => {
             <path d="M7.066 4.76A1.665 1.665 0 0 0 4 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112zm4 0A1.665 1.665 0 0 0 8 5.668a1.667 1.667 0 0 0 2.561 1.406c-.131.389-.375.804-.777 1.22a.417.417 0 1 0 .6.58c1.486-1.54 1.293-3.214.682-4.112z" />
           </svg>
         }
-        variant="primary"
+        variant="none"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       />
       <div
-        class="modal fade"
+        className="modal fade"
         id="exampleModal"
         tabindex="-1"
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
                 New message
               </h1>
               <button
@@ -43,10 +43,10 @@ const Comment = () => {
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
+            <div className="modal-body">
               <form>
-                <div class="mb-3">
-                  <label for="recipient-name" class="col-form-label">
+                <div className="mb-3">
+                  <label for="recipient-name" className="col-form-label">
                     Recipient:
                   </label>
                   <Input type="text" class="form-control" id="recipient-name" />
@@ -55,7 +55,7 @@ const Comment = () => {
                   <label for="message-text" class="col-form-label">
                     Message:
                   </label>
-                  <textarea class="form-control" id="message-text"></textarea>
+                  <textarea className="form-control" id="message-text"></textarea>
                 </div>
               </form>
             </div>
@@ -66,7 +66,7 @@ const Comment = () => {
                 data-bs-dismiss="modal"
                 label="Cancel"
               />
-              <Button type="button" variant="primary" label="Send" />
+              <Button type="button" variant="secondary" label="Send" />
             </div>
           </div>
         </div>

@@ -4,21 +4,18 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Gap from "../components/Gap";
 import axios, { AxiosHeaders } from "axios";
+import Modal from "../components/Modal";
+import Comment from "../components/Comment";
 import { useNavigate } from "react-router-dom";
 
 function NewStory() {
   const [content, setContent] = useState("input type here");
-  const { title, article } = content;
 
   const navigate = useNavigate();
 
   function handleContentChange(value) {
-    const title = modules.toolbar.toString(() => title == [i]);
-    if(this.title != article);
+    const title = modules.toolbar.findIndex((header) => toolbar[2] == " ");
     setContent(value);
-    // const cursorPosition = e.quill.getSelection().index;
-    // this.quill.insertText(cursorPosition, "★");
-    // this.quill.setSelection(cursorPosition + 1);
     console.log(title);
   }
 
@@ -117,6 +114,7 @@ function NewStory() {
     <div className="container m-5 mx-auto">
       <div className="row">
         <div className="col">
+        <Comment />
           <form onSubmit={handleSubmit}>
             <ReactQuill
               // placeholder1={placeholder1}

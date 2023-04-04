@@ -22,14 +22,14 @@ const Home = () => {
                 </div>
               </div>
               <div className="col">
-                <div className="p-3">
+                <div className="p-2 ">
                   <div className="d-flex justify-center align-content-center">
                     <div>
-                      <p class="first_line">Hello. My name is Onter</p>
-                      <p class="second_line">
+                      <p className="first_line">Hello. My name is Onter</p>
+                      <p className="second_line">
                         and I'm the onwer of GoBlog Group{" "}
                       </p> 
-                      <p class="third_line">
+                      <p className="third_line">
                       Nice to meet you, everyone!
                     </p>        
                     </div>
@@ -38,8 +38,8 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <Comment /> 
           <div className="headline">
+          <Gap height={30} />
             <div className="container overflow-hidden text-center">
               <div className="row gy-5">
                 <div className="col-6">
