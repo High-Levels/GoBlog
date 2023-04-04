@@ -1,23 +1,22 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Navbar from './components/Navbar';
-import NewStory from './pages/NewStory';
-import Profile  from './pages/Profile/Profile';
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
+import NewStory from "./pages/NewStory";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <br />
-      <br />
-      <br />
       <Router>
+        <Navbar />
+        <br />
+        <br />
+        <br />
         <ToastContainer
-          position='top-center'
+          position="top-center"
           autoClose={5000}
           hideProgressBar={false}
           newestOnTop={false}
@@ -26,18 +25,17 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme='light'
+          theme="light"
         />
         <Routes>
-          <Route path='/' element={<Home />} exact />
-          <Route path='/login' element={<Login />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/new-story' element={<NewStory />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path="/" element={<Home />} exact />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/new-story" element={<NewStory />} />
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

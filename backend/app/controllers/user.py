@@ -28,7 +28,8 @@ def createUser():
         jsonBody = request.json
         data = requestMapping.createUser(jsonBody)
         result = Checker(requestStruct.User(),soft = True).validate(data)
-        checkUser = select(a for a in User if a.username is result['username'] or a.email is result['email'])[:]
+        checkUser = select(a for a in User if a.username is result['username'] or a.email is result['email'] and a.isActivated is True)[:]
+        checkActivation = select(a for a in User if a.isActivated is False and a.email is result['email'])[:]
         if result['username']=="" or result['email']==""or result['password']=="":
             response = {
                     "Message": "All Data Must be Filled"
@@ -39,16 +40,22 @@ def createUser():
                     "Message": "Username or Email is Exist"
                 }
                 return responseHandler.badRequest(response)
-        elif email_regex.match(result['email']):
+        elif email_regex.match(result['email']) or checkActivation:
+            try:
+                User[checkActivation[0].idUser].delete()
+            except:
+                pass
             hashpassword = (hashlib.md5((result['password']+ os.getenv("SALT_PASSWORD")).encode())).hexdigest()
             #CREATE
             idUser = str(uuid4())
             User(idUser = idUser,username = result['username'],email = result['email'], password = hashpassword,dateRegister = datetime.now(), isActivated = False)
+
+            #in deployment:
             # sendMail = sendEmail(result['email'],f"Activate Your Account here : http://127.0.0.1:5000/activate/{idUser}","Activate Your Account")
             # mail.send(sendMail)
             response = {
                     "Data": jsonBody,
-                    "Message": "Data Created"
+                    "Message": "Please Check Email to Activate Your Account"
                 }
             return responseHandler.ok(response)
         else:

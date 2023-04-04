@@ -1,15 +1,23 @@
-import React from 'react';
-import Button from './Button';
-import GoblogPict from '../assets/images/Goblog.jpeg';
-import Avatar from './Avatar';
-import Image1 from '../assets/images/avatar.png';
-import '../style/index.css';
-import Search from './Search';
-
-
+import React from "react";
+import Button from "./Button";
+import GoblogPict from "../assets/images/Goblog.jpeg";
+import Avatar from "./Avatar";
+import Image1 from "../assets/images/avatar.png";
+import "../style/index.css";
+import Search from "./Search";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   // const navigasi = useNavigate();
+  const user = localStorage.getItem("refreshToken");
+  const handleLogout = () => {
+    try {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      Toas;
+    } catch (error) {console.log(error)}
+  };
+
   return (
     <div>
       <nav className="navbar navbar-expand-sm navbar-light bg-light  fixed-top">
@@ -28,21 +36,82 @@ const Navbar = () => {
               <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z" />
             </svg>
           </div>
-          <div className='dropdown'>
-            <button className='btn dropdown-toggle' type='button' id='dropdownMenuButton' data-bs-toggle="dropdown" aria-expanded="false">
+          <div className="dropdown">
+            <button
+              className="btn dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <Avatar src={Image1} height={30} className="rounded-5" />
             </button>
-            <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-              <li><a className='dropdown-item' href='/register'>Registrasi</a></li>
-              <li><a className='dropdown-item' href='/login'>Login</a></li>
-              <li><a className='dropdown-item' href='/'>Setting</a></li>
+            <ul
+              className="dropdown-menu dropdown-menu-end"
+              aria-labelledby="dropdownMenuButton"
+            >
+              {user ? (
+                <>
+                  <li>
+                    <Link className="dropdown-item" to="/">
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/">
+                      Setting
+                    </Link>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout} id="liveToastBtn">
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link className="dropdown-item" to="/register">
+                      Registrasi
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/login">
+                      Login
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>
       </nav>
       <ul id="searchResult"></ul>
+      <div className="toast-container position-fixed bottom-0 end-0 p-3">
+        <div
+          id="liveToast"
+          className="toast"
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div className="toast-header">
+            <img src="..." className="rounded me-2" alt="..." />
+            <strong className="me-auto">Bootstrap</strong>
+            <small>11 mins ago</small>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="toast"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="toast-body">logout berhasil</div>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default Navbar;

@@ -67,21 +67,21 @@ const Home = () => {
             <div className="row">
               <div className="col-sm-8">
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
-                <Gap height={18} />
+                {/* <Gap height={18} /> */}
                 <Card />
               </div>
               <div className="col-sm-4">

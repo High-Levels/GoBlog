@@ -33,7 +33,7 @@ function Card() {
   );
 
   return (
-    <div className="container">
+    <div className="container mb-3">
       <div className="card p-3 shadow" style={{ maxWidth: "700px" }}>
         <div className="row">
           <div className="col d-flex align-items-center mb-2">
