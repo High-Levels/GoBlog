@@ -18,7 +18,12 @@ def login():
             return responseHandler.badRequest(response)
         elif user:
             currentUser = user[0].to_dict()
+<<<<<<< Updated upstream
             if currentUser['isActivated'] == False:
+=======
+            #in deployment set to false only
+            if currentUser['isActivated'] == False or currentUser['isActivated'] == True:
+>>>>>>> Stashed changes
                 accessToken = create_access_token(identity=currentUser,fresh=True)
                 refreshToken = create_refresh_token(identity=currentUser)
                 response = jsonify({
