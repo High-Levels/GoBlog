@@ -5,6 +5,7 @@ import Avatar from './Avatar';
 import Image1 from '../assets/images/avatar.png';
 import '../style/index.css';
 import Search from './Search';
+import { Link } from 'react-router-dom';
 
 
 
@@ -33,9 +34,9 @@ const Navbar = () => {
               <Avatar src={Image1} height={30} className="rounded-5" />
             </button>
             <ul className='dropdown-menu' aria-labelledby='dropdownMenuButton'>
-              <li><a className='dropdown-item' href='/register'>Registrasi</a></li>
-              <li><a className='dropdown-item' href='/login'>Login</a></li>
-              <li><a className='dropdown-item' href='/'>Setting</a></li>
+              <li><Link className='dropdown-item' to='/register'>Registrasi</Link></li>
+              <li><Link className='dropdown-item' to='/login'>Login</Link></li>
+              <li><Link className='dropdown-item' to='/'>Setting</Link></li>
             </ul>
           </div>
         </div>
