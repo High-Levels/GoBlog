@@ -11,6 +11,7 @@ from pony.orm import select
 from werkzeug.utils import secure_filename
 from app import allowedextensions, uploadFolderContents
 import os
+from pony.orm import desc
 
 
 
@@ -220,3 +221,35 @@ def readAllArticle():
         return responseHandler.ok(response)
     except Exception as err:
         return str(err), HTTPStatus.BAD_GATEWAY
+
+def userRecentArticle(userId):
+    try:
+        jsonBody = request.json
+        data = requestMapping.userRecentArticle(jsonBody)
+        result = Checker(requestStruct.userRecentArticle(), soft=True).validate(data)
+        maxArticlePerPage = result["maxArticlePerPage"]
+        page = result["page"]
+        if maxArticlePerPage == "":
+            maxArticlePerPage = 10
+        if page == "":
+            page = 1
+        maxArticlePerPage = int(maxArticlePerPage)
+        page = int(page)
+        if page <= 0:
+            response = {
+                "Data": "page must be higher than 0"
+            }
+            return responseHandler.badRequest(response)
+        selectUserArticleOffset = (maxArticlePerPage*(page-1))
+        selectUserArticleMax = maxArticlePerPage + selectUserArticleOffset
+        selectUserArticle = select(
+            a for a in Article for u in a.user if u.idUser == userId).order_by(desc(Article.idArticle))[selectUserArticleOffset:selectUserArticleMax]
+        response = {
+                "Data" : {}
+            }
+        for a in selectUserArticle:
+            response["Data"]["idArticle"] = a.idArticle
+        return responseHandler.ok(response)
+    except Exception as err:
+        return str(err), HTTPStatus.BAD_GATEWAY
+    

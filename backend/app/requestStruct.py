@@ -92,3 +92,24 @@ def comment():
         "dateComment": str
     }
     return schema
+
+def userRecentArticle():
+    schema = {
+        "maxArticlePerPage": int,
+        "page":int
+    }
+    return schema
+
+def getUserFriendRequest():
+    schema = {
+        "maxFriendRequestPerPage": int,
+        "page": int
+    }
+    return schema
+
+def getUserFriend():
+    schema = {
+        "maxFriendPerPage": int,
+        "page": int
+    }
+    return schema

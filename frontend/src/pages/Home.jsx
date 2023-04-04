@@ -28,7 +28,10 @@ const Home = () => {
                       <p class="first_line">Hello. My name is Onter</p>
                       <p class="second_line">
                         and I'm the onwer of GoBlog Group{" "}
-                      </p>       
+                      </p> 
+                      <p class="third_line">
+                      Nice to meet you, everyone!
+                    </p>        
                     </div>
                   </div>
                 </div>

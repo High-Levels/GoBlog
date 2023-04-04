@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import auth,user,category,tag, article, articleLikes, comment
+from app.controllers import auth,user,category,tag, article, articleLikes, comment, friend
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
@@ -36,6 +36,7 @@ app.route('/read/article/<id>', methods=["GET"])(article.readArticle)
 app.route('/update/article/<id>', methods=["PUT"])(article.updateArticle)
 app.route('/delete/article/<id>', methods=["DELETE"])(article.deleteArticle)
 app.route('/list/articles', methods=["GET"])(article.readAllArticle)
+app.route('/list/userRecentArticles/<id>', methods=["GET"])(article.userRecentArticle)
 
 
 # Comment
@@ -46,3 +47,10 @@ app.route('/delete/comment/<id>', methods=["DELETE"])(comment.deleteComment)
 # Like
 app.route('/update/like/<id>', methods=["POST"])(articleLikes.updateLike)
 app.route('/read/like/<id>', methods=["GET"])(articleLikes.readLike)
+
+# Friend
+app.route('/friend/list/', methods=["POST"])(friend.getUserFriend)
+app.route('/friendRequest/list/outgoing/', methods=["POST"])(friend.getUserOutgoingFriendRequest)
+app.route('/friendRequest/list/incoming/', methods=["POST"])(friend.getUserIncomingFriendRequest)
+app.route('/friendRequest/send/<targetIdUser>', methods=["POST"])(friend.sendFriendRequest)
+app.route('/friendRequest/accept/<targetIdUser>', methods=["POST"])(friend.acceptFriendRequest) 

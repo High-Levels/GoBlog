@@ -62,3 +62,24 @@ def comment(jsonBody):
         "dateComment": jsonBody["dateComment"]
     }
     return data
+
+def userRecentArticle(jsonBody):
+    data = {
+        "maxArticlePerPage": jsonBody["maxArticlePerPage"],
+        "page": jsonBody["page"]
+    }
+    return data
+
+def getUserFriendRequest(jsonBody):
+    data = {
+        "maxFriendRequestPerPage": jsonBody["maxFriendRequestPerPage"],
+        "page": jsonBody["page"]
+    }
+    return data
+
+def getUserFriend(jsonBody):
+    data = {
+        "maxFriendPerPage": jsonBody["maxFriendPerPage"],
+        "page": jsonBody["page"]
+    }
+    return data

@@ -10,7 +10,8 @@
 }
 
 .first_line,
-.second_line {
+.second_line,
+.third_line {
   white-space: nowrap; 
   overflow: hidden; 
   margin: 0.5rem auto;
@@ -38,6 +39,14 @@
     animation-delay: 7s;
   }
 
+  .third_line {
+    border-right: 2px solid yellow;
+    animation: typewriter_3 5s steps(31) 1s 1 normal both,
+      third_cursor 20ms steps(31) infinite;
+    -webkit-animation-delay: 7s;
+    animation-delay: 14s;
+  }
+
   @keyframes typewriter_1 {
     from {
       width: 0;
@@ -47,6 +56,14 @@
     }
   }
   @keyframes typewriter_2 {
+    from {
+      width: 0;
+    }
+    to {
+      width: 20rem;
+    }
+  }
+  @keyframes typewriter_3 {
     from {
       width: 0;
     }
@@ -64,6 +81,14 @@
     }
   }
   @keyframes second_cursor{
+    from {
+      border-right-color: yellow;
+    }
+    to {
+      border-right-color:yellow;
+    }
+  }
+  @keyframes third_cursor{
     from {
       border-right-color: yellow;
     }
