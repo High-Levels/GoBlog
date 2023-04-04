@@ -78,6 +78,7 @@ const Navbar = () => {
                       Setting
                     </Link>
                   </li>
+                  <li><hr className="dropdown-divider" /></li>
                   <li>
                     <button className="dropdown-item" onClick={handleLogout} id="liveToastBtn">
                       Logout
