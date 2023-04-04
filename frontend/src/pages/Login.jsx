@@ -6,6 +6,7 @@ import Input from '../components/Input'
 import ImageLogin from '../assets/images/Image-login.jpg'
 import Particle from '../components/Particles.BG'
 import { login } from '../services/Auth'
+import { toast } from 'react-toastify'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -20,7 +21,8 @@ const Login = () => {
 
     try {
       await login(username, password)
-      alert('Login Berhasil!')
+      // alert('Login Berhasil!')
+      toast.success('Login Berhasil!')
       setIsLoading(false)
       navigate('/')
     } catch (error) {

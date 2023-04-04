@@ -7,6 +7,7 @@ import '../style/index.css'
 import Particle from '../components/Particles.BG'
 import { useNavigate } from 'react-router-dom'
 import { registerUser } from '../services/Auth'
+import { toast } from 'react-toastify'
 
 const Register = () => {
   // deklarasi hooks register
@@ -32,7 +33,8 @@ const Register = () => {
     try {
       const response = await registerUser(register)
       // console.log(response.data)
-      alert('Register Berhasil')
+      // alert('Register Berhasil')
+      toast.success('Register Berhasil')
       setLoading(false)
       navigate('/login')
     } catch (error) {
