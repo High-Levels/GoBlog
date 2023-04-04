@@ -15,7 +15,7 @@ const Navbar = () => {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       Toas;
-    } catch (error) {}
+    } catch (error) {console.log(error)}
   };
 
   return (
