@@ -191,7 +191,7 @@ def sendFriendRequest(targetIdUser):
             u for u in User if u.idUser == uuid.UUID(targetIdUser)
             )
             if len(selectTargetUser) == 0:
-                response["error"] = True
+                response["targetIdUserExist"] = False
                 response["logMsg"] = "Target user does not exist"
                 return responseHandler.badRequest(response)
             response["targetIdUserExist"] = True
@@ -272,10 +272,28 @@ def acceptFriendRequest(targetIdUser):
             u for u in User if u.idUser == uuid.UUID(targetIdUser)
         )
         if len(selectTargetUser) == 0:
-            response["error"] = True
+            response["targetIdUserExist"] = False
             response["logMsg"] = "Target user does not exist"
-            return responseHandler.badGateway(response)
+            return responseHandler.ok(response)
         response["targetIdUserExist"] = True
+        selectTargetUserFriendRequest = select(
+            fr for fr in FriendRequest 
+            if fr.sender.idUser == uuid.UUID(targetIdUser) and fr.recipient.idUser == uuid.UUID(currentUser["idUser"])
+        )
+        if len(selectTargetUserFriendRequest) == 0:
+            response["friendRequestExist"] = False
+            selectFriendWithTargetUser = select(
+            f for f in Friend if 
+            (f.userOne.idUser == uuid.UUID(currentUser["idUser"]) and f.userTwo.idUser == uuid.UUID(targetIdUser))
+            or 
+            (f.userOne.idUser == uuid.UUID(targetIdUser) and f.userTwo.idUser == uuid.UUID(currentUser["idUser"])))
+            if len(selectFriendWithTargetUser) != 0:
+                response["alreadyFriend"] = True
+                response["logMsg"] = "You are already friend with target user"
+            else:
+                response["logMsg"] = "The target user have not send you friend request"
+            return responseHandler.ok(response)
+        response["friendRequestExist"] = True
         selectFriendWithTargetUser = select(
             f for f in Friend if 
             (f.userOne.idUser == uuid.UUID(currentUser["idUser"]) and f.userTwo.idUser == uuid.UUID(targetIdUser))
@@ -283,18 +301,10 @@ def acceptFriendRequest(targetIdUser):
             (f.userOne.idUser == uuid.UUID(targetIdUser) and f.userTwo.idUser == uuid.UUID(currentUser["idUser"])))
         if len(selectFriendWithTargetUser) != 0:
             response["alreadyFriend"] = True
-            response["logMsg"] = "You are already friend with target user"
+            response["logMsg"] = "You are already friend with target user, friend request has been deleted."
+            selectTargetUserFriendRequest.delete(bulk=True)
             return responseHandler.ok(response)
         response["alreadyFriend"] = False
-        selectTargetUserFriendRequest = select(
-            fr for fr in FriendRequest 
-            if fr.sender.idUser == uuid.UUID(targetIdUser) and fr.recipient.idUser == uuid.UUID(currentUser["idUser"])
-        )
-        if len(selectTargetUserFriendRequest) == 0:
-            response["error"] = True
-            response["logMsg"] = "The target user have not send you friend request"
-            return responseHandler.badGateway(response)
-        response["friendRequestExist"] = True
         selectCurrentUserFriendRequest = select(
             fr for fr in FriendRequest 
             if fr.sender.idUser == uuid.UUID(currentUser["idUser"]) and fr.recipient.idUser == uuid.UUID(targetIdUser)
@@ -309,7 +319,84 @@ def acceptFriendRequest(targetIdUser):
         response["logMsg"] = str(e)
         print(e)
         return responseHandler.badGateway(response)
+
+@jwt_required()
+def rejectFriendRequest(targetIdUser):
+    response = {
+        "targetUserExist":None,
+        "targetUserSendYouFriendRequest":None,
+        "error":False,
+        "logMsg":""
+    }
+    try:
+        currentUser = get_jwt_identity()
+        currentUser = get_jwt_identity()
+        if targetIdUser == currentUser["idUser"]:
+            response["error"] = True
+            response["logMsg"] = "You cannot unfriend yourself"
+            return responseHandler.badRequest(response)
+        selectTargetIdUser = select(u for u in User if u.idUser == uuid.UUID(targetIdUser))
+        if len(selectTargetIdUser) == 0:
+            response["targetUserExist"] = False
+            response["logMsg"] = "Target user does not exist"
+            return responseHandler.badRequest(response)
+        response["targetUserExist"] = True
+        selectTargetUserFriendRequest = select(
+                fr for fr in FriendRequest 
+                if fr.sender.idUser == uuid.UUID(targetIdUser) and fr.recipient.idUser == uuid.UUID(currentUser["idUser"]))
+        if len(selectTargetUserFriendRequest) == 0:
+            response["targetUserSendYouFriendRequest"] = False
+            response["logMsg"] = "Target user did not send you friend request"
+            return responseHandler.ok(response)
+        response["targetUserSendYouFriendRequest"] = True
+        selectTargetUserFriendRequest.delete(bulk=True)
+        response["logMsg"] = "Friend request rejected"
+        return responseHandler.ok(response)
+    except Exception as e:
+        response["error"] = True
+        response["logMsg"] = str(e)
+        print(e)
+        return responseHandler.badGateway(e)
     
-    
+@jwt_required()
+def unfriend(targetIdUser):
+    response = {
+        "targetUserExist":None,
+        "isFriend":None,
+        "error":False,
+        "logMsg":""
+    }
+    try:
+        currentUser = get_jwt_identity()
+        if targetIdUser == currentUser["idUser"]:
+            response["error"] = True
+            response["logMsg"] = "You cannot unfriend yourself"
+            return responseHandler.badRequest(response)
+        selectTargetIdUser = select(u for u in User if u.idUser == uuid.UUID(targetIdUser))
+        if len(selectTargetIdUser) == 0:
+            response["targetUserExist"] = False
+            response["logMsg"] = "Target user does not exist"
+            return responseHandler.badRequest(response)
+        response["targetUserExist"] = True
+        selectFriend = select(f for f in Friend 
+                              if 
+                              (f.userOne.idUser == uuid.UUID(currentUser["idUser"]) and f.userTwo.idUser == uuid.UUID(targetIdUser))
+                              or
+                              (f.userOne.idUser == uuid.UUID(targetIdUser) and f.userTwo.idUser == uuid.UUID(currentUser["idUser"])))
+        if len(selectFriend) == 0:
+            response["isFriend"] = False
+            response["logMsg"] = "You are not friend with the target user"
+            return responseHandler.ok(response)
+        response["isFriend"] = True
+        for f in selectFriend:
+            f.delete()
+        response["logMsg"] = "You are no longer friend with the target user"
+        return responseHandler.ok(response)
+        
+    except Exception as e:
+        response["error"] = True
+        response["logMsg"] = str(e)
+        print(e)
+        return responseHandler.badGateway(response)
     
      

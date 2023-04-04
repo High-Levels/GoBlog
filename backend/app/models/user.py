@@ -22,3 +22,5 @@ class User(db.Entity):
     friendUserTwo = Set('Friend', reverse="userTwo")
     friendRequestSender = Set('FriendRequest', reverse="sender")
     friendRequestRecipient = Set('FriendRequest', reverse="recipient")
+    followSource = Set("Follow", reverse="source")
+    followTarget = Set("Follow", reverse="target")
