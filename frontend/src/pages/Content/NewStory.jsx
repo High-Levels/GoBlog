@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import Gap from "../components/Gap";
+import Gap from "../../components/Gap";
 import axios, { AxiosHeaders } from "axios";
-import Modal from "../components/Modal";
-import Comment from "../components/Comment";
+import Modal from "../../components/Modal";
+import Comment from "../../components/Comment";
 import { useNavigate } from "react-router-dom";
 
 function NewStory() {

@@ -3,7 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
-import NewStory from "./pages/NewStory";
+import NewStory from "./pages/Content/NewStory";
+import Profile from "./pages/Profile/Profile";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/new-story" element={<NewStory />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </Router>
     </>
@@ -39,3 +41,4 @@ function App() {
 }
 
 export default App;
+
