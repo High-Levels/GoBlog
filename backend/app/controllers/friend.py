@@ -193,7 +193,7 @@ def sendFriendRequest(targetIdUser):
             if len(selectTargetUser) == 0:
                 response["targetIdUserExist"] = False
                 response["logMsg"] = "Target user does not exist"
-                return responseHandler.badRequest(response)
+                return responseHandler.ok(response)
             response["targetIdUserExist"] = True
             selectFriendWithTargetUser = select(
             f for f in Friend if 
@@ -376,7 +376,7 @@ def unfriend(targetIdUser):
         if len(selectTargetIdUser) == 0:
             response["targetUserExist"] = False
             response["logMsg"] = "Target user does not exist"
-            return responseHandler.badRequest(response)
+            return responseHandler.ok(response)
         response["targetUserExist"] = True
         selectFriend = select(f for f in Friend 
                               if 
