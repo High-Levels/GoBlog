@@ -83,3 +83,10 @@ def getUserFriend(jsonBody):
         "page": jsonBody["page"]
     }
     return data
+
+def getUserNotification(jsonBody):
+    data = {
+        "maxNotificationPerPage": jsonBody["maxNotificationPerPage"],
+        "page" : jsonBody["page"]
+    }
+    return data
