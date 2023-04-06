@@ -39,18 +39,18 @@ function Vocabulary() {
   };
 
   return (
-    <div className="container">
-      
-      <input type="text" className="form-control mb-2" placeholder="Ketik kata kunci..." value={searchString} onChange={handleSearch} />
-      <ul>
-          {searchResults.map((result) => (
-            <li key={result.id}>
-              <li>{result.word}</li>
-              <li>{result.definition}</li>
-            </li>
-          ))}
-</ul>
-    </div>
+    <>
+      <div>
+        <input type="text" style={{width:"700px"}} className="form-control" placeholder="cari sesuatu..." value={searchString} onChange={handleSearch} />
+      </div>
+      <div>
+        {searchResults.map((result) => (
+          <div key={result.id}>
+            <p><strong>{result.word}</strong> {result.definition}</p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 
