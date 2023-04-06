@@ -1,5 +1,5 @@
 from ._base import db
-from . import article,comment,user,articleCategory,articleTag,category,tag,content,like,friend,friendRequest,follow
+from . import article,comment,user,articleCategory,articleTag,category,tag,content,like,friend,friendRequest,follow, notification
 import os
 
 db_params = {'provider': os.getenv('DB_PROVIDER'),

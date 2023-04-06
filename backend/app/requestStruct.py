@@ -113,3 +113,10 @@ def getUserFriend():
         "page": int
     }
     return schema
+
+def getUserNotification():
+    schema = {
+        "maxNotificationPerPage": int,
+        "page": int
+    }
+    return schema
