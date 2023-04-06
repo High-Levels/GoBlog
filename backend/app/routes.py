@@ -1,5 +1,5 @@
 from app import app
-from app.controllers import auth,user,category,tag, article, articleLikes, comment, friend
+from app.controllers import auth,user,category,tag, article, articleLikes, comment, friend, follow
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
@@ -56,3 +56,7 @@ app.route('/friendRequest/list/incoming/', methods=["POST"])(friend.getUserIncom
 app.route('/friendRequest/send/<targetIdUser>', methods=["POST", "GET"])(friend.sendFriendRequest)
 app.route('/friendRequest/accept/<targetIdUser>', methods=["POST", "GET"])(friend.acceptFriendRequest) 
 app.route('/friendRequest/reject/<targetIdUser>', methods=["POST", "GET"])(friend.rejectFriendRequest)
+
+# follow
+app.route('/follow/add/<targetIdUser>', methods=["POST", "GET"])(follow.follow)
+app.route('/follow/remove/<targetIdUser>', methods=["POST", "GET"])(follow.unfollow)
