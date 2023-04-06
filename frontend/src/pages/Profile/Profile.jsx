@@ -1,9 +1,10 @@
 import React from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { Draft } from "./Draft";
+import { Link, useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  Navigate = useNavigate()
   return (
     <div className="container-fluid">
       <hr />
@@ -15,10 +16,17 @@ const Profile = () => {
         </div>
       </header>
       <div className="d-flex p-3 gap-2">
-        <Button label="Draft" variant="primary"  />
-        <Button label="Published" variant="primary" />
-        <Button label="Response" variant="primary" />
+        <Link to="/profile/draft">
+          Draft
+        </Link>
+        <Link to="/profile/published">
+          Published
+        </Link>
+        <Link to="/profile/respond">
+          Response
+        </Link>
       </div>
+      <hr />
     </div>
   );
 };

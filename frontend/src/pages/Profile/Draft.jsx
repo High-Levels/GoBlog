@@ -1,7 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Card from '../../components/Card';
+import Profile from './Profile';
 
 export const Draft = () => {
   return (
-    <div>Draft</div>
+    <div>
+    <Profile />
+      <Card />
+    </div>
   )
 }
