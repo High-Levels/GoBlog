@@ -246,6 +246,12 @@ def sendFriendRequest(targetIdUser):
                 selectTargetUserFriendRequest.delete(bulk=True)
                 selectCurrentUserFriendRequest.delete(bulk=True)
                 FriendObject = Friend(userOne=currentUser["idUser"], userTwo=targetIdUser, dateFriend=datetime.now())
+                newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REQUEST_ACCEPTED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
                 response["logMsg"] = "Target user already sent you friend request. You are now friend with target user."
                 return responseHandler.ok(response)
         except Exception as e:
@@ -321,6 +327,12 @@ def acceptFriendRequest(targetIdUser):
         selectTargetUserFriendRequest.delete(bulk=True)
         selectCurrentUserFriendRequest.delete(bulk=True)
         FriendObject = Friend(userOne=currentUser["idUser"], userTwo=targetIdUser, dateFriend=datetime.now())
+        newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REQUEST_ACCEPTED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
         response["logMsg"] = "Friend request accepted"
         return responseHandler.ok(response)
     except Exception as e:
@@ -360,6 +372,12 @@ def rejectFriendRequest(targetIdUser):
             return responseHandler.ok(response)
         response["targetUserSendYouFriendRequest"] = True
         selectTargetUserFriendRequest.delete(bulk=True)
+        newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REQUEST_REJECTED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
         response["logMsg"] = "Friend request rejected"
         return responseHandler.ok(response)
     except Exception as e:
