@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Search() {
+function SearchPage() {
   const [searchString, setSearchString] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
@@ -41,9 +41,10 @@ function Search() {
   return (
     <>
       <div>
-        <input type="text" style={{width:"700px"}} className="form-control" placeholder="cari sesuatu..." value={searchString} onChange={handleSearch} />
+        <input type="text" style={{width:"300px"}} className="form-control d-sm-none ms-5 mt-5" placeholder="cari sesuatu..." value={searchString} onChange={handleSearch} />
       </div>
-      <div>
+      <div className='ms-5 mt-5'>
+        <h3>Hasil Pencarian:</h3>
         {searchResults.map((result) => (
           <div key={result.id}>
             <p><strong>{result.word}</strong> {result.definition}</p>
@@ -54,4 +55,4 @@ function Search() {
   );
 }
 
-export default Search;
+export default SearchPage;

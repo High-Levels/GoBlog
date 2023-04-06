@@ -10,6 +10,7 @@ import { Published } from "./pages/Profile/Published";
 import { Respond } from "./pages/Profile/Responses";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
           <Route path="/profile/draft" element={<Draft />} />
           <Route path="/profile/published" element={<Published/>} />
           <Route path="/profile/respond" element={<Respond />} />
+          <Route path="/search" element={<SearchPage/>}/>
         </Routes>
       </Router>
     </>
