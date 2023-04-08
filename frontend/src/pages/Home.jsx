@@ -16,14 +16,13 @@ const Home = () => {
         <div className="header">
           <div className="container overflow-hidden text-center">
             <div className="row gy-5">
-              <div className="col-6">
-                <div className="p-4">
-                  <img src={gif} className="row" />
+              <div className="col">
+                <div className="my-5 text-center">
+                  <img src={gif} />
                 </div>
               </div>
               <div className="col">
-                <div className="p-2 ">
-                  <div className="d-flex justify-center align-content-center">
+                  <div className="px-4 my-5 text-center">
                     <div>
                       <p className="first_line">Hello. My name is Onter</p>
                       <p className="second_line">
@@ -34,7 +33,6 @@ const Home = () => {
                     </p>        
                     </div>
                   </div>
-                </div>
               </div>
             </div>
           </div>

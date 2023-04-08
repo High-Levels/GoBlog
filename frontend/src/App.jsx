@@ -5,6 +5,8 @@ import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import NewStory from "./pages/Content/NewStory";
 import Profile from "./pages/Profile/Profile";
+import { Account } from "./pages/Profile/Account";
+import PageNotFound from "./pages/Php";
 import { Draft } from "./pages/Profile/Draft";
 import { Published } from "./pages/Profile/Published";
 import { Respond } from "./pages/Profile/Responses";
@@ -37,9 +39,11 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/new-story" element={<NewStory />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/account" element={<Account />} />
           <Route path="/profile/draft" element={<Draft />} />
           <Route path="/profile/published" element={<Published/>} />
           <Route path="/profile/respond" element={<Respond />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </>

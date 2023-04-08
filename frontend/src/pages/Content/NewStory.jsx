@@ -14,9 +14,8 @@ function NewStory() {
   const navigate = useNavigate();
 
   function handleContentChange(value) {
-    const title = modules.toolbar.findIndex((header) => toolbar[2] == " ");
     setContent(value);
-    console.log(title);
+    // console.log(content);
   }
 
   // // Store accumulated changes
@@ -114,7 +113,6 @@ function NewStory() {
     <div className="container m-5 mx-auto">
       <div className="row">
         <div className="col">
-        <Comment />
           <form onSubmit={handleSubmit}>
             <ReactQuill
               // placeholder1={placeholder1}
