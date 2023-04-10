@@ -28,7 +28,9 @@ def createUser():
         jsonBody = request.json
         data = requestMapping.createUser(jsonBody)
         result = Checker(requestStruct.User(),soft = True).validate(data)
-        checkUser = select(a for a in User if a.username is result['username'] or a.email is result['email'] and a.isActivated is True)[:]
+        checkUser = select(a for a in User if a.username is result['username'] or 
+                           a.email is result['email'] or a.googleEmail is result['email'] 
+                           and a.isActivated is True)[:]
         checkActivation = select(a for a in User if a.isActivated is False and a.email is result['email'])[:]
         if result['username']=="" or result['email']==""or result['password']=="":
             response = {
