@@ -32,8 +32,7 @@ const Register = () => {
     setLoading(true)
     try {
       const response = await registerUser(register)
-      // console.log(response.data)
-      // alert('Register Berhasil')
+      console.log(response.data)
       toast.success('Register Berhasil')
       setLoading(false)
       navigate('/login')
@@ -62,7 +61,7 @@ const Register = () => {
                     <Input
                       label='Username'
                       placeholder='Enter Username'
-                      type='username'
+                      type='text'
                       name='username'
                       value={register.username}
                       onChange={handleChangeInput}
