@@ -6,7 +6,13 @@ class User(db.Entity):
     idUser = PrimaryKey(uuid.UUID,default = uuid.uuid4 ,column = 'id_user')
     username = Required(str, unique = True)
     email = Required(str, unique = True)
+    # if registered with google,
+    # username will be random uuid,
+    # and password will be empty string
     password = Required(str)
+    # if linked with google,
+    # the linked email will be here
+    googleEmail = Optional(str)
     name = Optional(str,nullable = True)
     gender = Optional(str, nullable = True)
     address = Optional(str,nullable = True)

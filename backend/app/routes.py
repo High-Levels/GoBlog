@@ -3,6 +3,8 @@ from app.controllers import auth,user,category,tag, article, articleLikes, comme
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
+app.route('/googlelogin/start', methods=["GET", "POST"])(auth.googleLoginStart)
+app.route('/googlelogin/callback', methods=["GET", "POST"])(auth.googleLoginCallback)
 
 
 #User

@@ -8,24 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 import "./profile.css";
 
 const Profile = () => {
-  // navigate = useNavigate();
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   //     axios
-  //   //       .put(`url`, content)
-  //   //       .then((res) => {
-  //   //         console.log(res);
-  //   //         alert("Artikel berhasil dipublish");
-  //   //         // setContent("");
-  //   //         navigate(`endpoint`);
-  //   //       })
-  //   // .catch((err) => {await
-  //   //         console.log(err);
-  //   //       });
-  //   //     console.log(content);
-  // };
-
   return (
     <div className="container-fluid">
       <div className="prof">
@@ -33,7 +15,7 @@ const Profile = () => {
       </div>
       <header className="d-flex align-items-center justify-content-md-between p-3 mt-4 mb-4 border-bottom">
         <h3 className="mt-2">Your Stories</h3>
-        <div className="ms-auto d-flex gap-2">
+        <div className="ms-auto d-flex gap-2 p-3">
           <Button label="Write a story" variant="secondary" />
           <Button label="Edit" variant="light" />
         </div>

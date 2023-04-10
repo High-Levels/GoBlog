@@ -76,6 +76,7 @@ const Home = () => {
                 {/* <Gap height={18} /> */}
                 <Card />
               </div>
+
               <div className='col-sm-4'>
                 <div className='sticky'>
                   <Card />
