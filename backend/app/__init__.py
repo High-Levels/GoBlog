@@ -6,11 +6,15 @@ from flask_jwt_extended import JWTManager
 import cloudinary
 from flask_mail import Mail
 from flask_cors import CORS
+import os
+from flask_wtf import CSRFProtect
 
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+# CSRFProtect(app)
+CSRF_TOKEN_SECRET_KEY = os.urandom(32)
 JWTManager(app)
 
 

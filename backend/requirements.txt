@@ -8,3 +8,5 @@ gevent
 json-checker
 cloudinary
 Flask-Mail
+Flask-WTF
+requests
