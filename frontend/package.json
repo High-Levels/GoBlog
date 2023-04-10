@@ -1,5 +1,6 @@
 {
   "name": "vite-project",
+  "proxy": "http://13.239.136.211/api/blog",
   "private": true,
   "version": "0.0.0",
   "type": "module",
