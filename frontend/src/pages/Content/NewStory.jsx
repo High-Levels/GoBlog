@@ -1,22 +1,25 @@
 import React, { useState, useRef, useEffect } from "react";
 import Button from "../../components/Button";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 import Gap from "../../components/Gap";
 import axios, { AxiosHeaders } from "axios";
-import Modal from "../../components/Modal";
-import Comment from "../../components/Comment";
 import { useNavigate } from "react-router-dom";
 
 function NewStory() {
-  const [content, setContent] = useState("input type here");
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
 
   const navigate = useNavigate();
+  const inputRef = useRef(null);
 
   function handleContentChange(value) {
     setContent(value);
-    // console.log(content);
   }
+
+  const handleFocus = () => {
+    inputRef.current.style.outline = "none";
+  };
 
   // // Store accumulated changes
   // let change = new Delta();
@@ -46,36 +49,6 @@ function NewStory() {
 
   // const inputRef = useRef(null);
 
-  // useEffect(() => {
-  //   document.title = "New Story";
-  //   inputRef.current.focus();
-  //   if (inputRef.current) {
-  //     const input = inputRef.current.getEditor();
-
-  //     const headingPlaceholder = "<h2><b>Judul Artikel</b></h2>";
-  //     const paragraphPlaceholder = "<p>Ketikkan konten Anda di sini ...</p>";
-
-  //     input.root.innerHTML = headingPlaceholder + paragraphPlaceholder;
-
-  //     input.formatLine(0, 1, { header: 2 });
-
-  //     input.on("text-change", () => {
-  //       const isEmpty = input.getText().trim().length === 0;
-  //       if (isEmpty) {
-  //         input.root.innerHTML = headingPlaceholder + paragraphPlaceholder;
-  //         input.formatLine(0, 1, { header: 2 });
-  //       }
-  //     });
-
-  //     input.root.addEventListener("click", () => {
-  //       const isEmpty = input.getText().trim().length === 0;
-  //       if (isEmpty) {
-  //         input.root.innerHTML = "";
-  //       }
-  //     });
-  //   }
-  // }, []);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     //     axios
@@ -90,6 +63,8 @@ function NewStory() {
     //         console.log(err);
     //       });
     //     console.log(content);
+    // console.log(title);
+    // console.log(content);
   };
 
   const modules = {
@@ -106,27 +81,39 @@ function NewStory() {
     ],
   };
 
-  // const placeholder1 = "Title";
-  // const placeholder2 = "Type your content here...";
+  useEffect(() => {
+    document.title = "New Story";
+  }, []);
 
   return (
-    <div className="container m-5 mx-auto">
+    <div className="container  m-5 mx-auto">
       <div className="row">
         <div className="col">
+          <div>
+            <input
+              type="text"
+              placeholder="Judul artikel"
+              className="border-0 w-100 mx-3"
+              ref={inputRef}
+              onFocus={handleFocus}
+              onChange={(e) => setTitle(e.target.value)}
+              style={{ fontSize: "32px", fontWeight: "bold" }}
+            />
+          </div>
           <form onSubmit={handleSubmit}>
             <ReactQuill
-              // placeholder1={placeholder1}
-              // placeholder2={placeholder2}
-              // ref={inputRef}
+              placeholder="Tell your story ..."
               className="mt-3"
-              theme="snow"
+              theme="bubble"
               value={content}
               onFocus={() => setContent("")}
               onChange={handleContentChange}
               modules={modules}
             />
             <Gap height={18} />
-            <Button label="Publish" variant="success" type="submit" />
+            <div className="mx-3">
+              <Button label="Publish" variant="success" type="submit" />
+            </div>
           </form>
         </div>
       </div>
