@@ -12,7 +12,7 @@ class User(db.Entity):
     password = Required(str)
     # if linked with google,
     # the linked email will be here
-    googleEmail = Optional(str)
+    googleEmail = Optional(str,nullable = True)
     name = Optional(str,nullable = True)
     gender = Optional(str, nullable = True)
     address = Optional(str,nullable = True)
@@ -20,7 +20,7 @@ class User(db.Entity):
     phoneNumber = Optional(str, column = "phone_number",nullable = True)
     dateRegister = Required(date,column = 'date_register')
     picture = Optional(str, nullable = True)
-    isActivated = Required(bool)
+    isActivated = Required(bool,column = "is_activated")
     article = Set('Article')
     comment = Set('Comment')
     like = Set('Like')

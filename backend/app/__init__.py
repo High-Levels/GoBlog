@@ -8,10 +8,12 @@ from flask_mail import Mail
 from flask_cors import CORS
 import os
 from flask_wtf import CSRFProtect
+from app.prefixMiddleware import PrefixMiddleware
 
 from flask_cors import CORS
 
 app = Flask(__name__)
+app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix='/api/blog')
 CORS(app)
 # CSRFProtect(app)
 CSRF_TOKEN_SECRET_KEY = os.urandom(32)

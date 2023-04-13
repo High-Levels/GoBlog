@@ -19,6 +19,11 @@ from uuid import uuid4
 import datetime
 import json
 import traceback
+
+def hashPassword(password):
+    hashpassword = hashlib.md5((password+os.getenv("SALT_PASSWORD")).encode()).hexdigest()
+    return hashpassword
+
 # https://stackoverflow.com/questions/3542881/python-opposite-function-urllib-urlencode
 
 @jwt_required(optional=True)
