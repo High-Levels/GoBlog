@@ -109,7 +109,10 @@ def listUsers():
         data = []
         for i in range(len(listUser)):
             data.append(listUser[i].to_dict())
-        return responseHandler.ok(data)
+        response = {
+            "Data": data
+        }
+        return responseHandler.ok(response)
     except Exception as err:
         response = {
             "Error": str(err)
