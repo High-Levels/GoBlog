@@ -103,6 +103,19 @@ def getChangePassword(id):
         }
         return responseHandler.badGateway(response)
 
+def listUsers():
+    try:
+        listUser = select(a for a in User)[:]
+        data = []
+        for i in range(len(listUser)):
+            data.append(listUser[i].to_dict())
+        return responseHandler.ok(data)
+    except Exception as err:
+        response = {
+            "Error": str(err)
+        }
+        return responseHandler.badGateway(response)
+
 def setChangePassword(id):
     try:
         jsonBody = request.json
@@ -143,7 +156,6 @@ def readUser(id):
     try:
         readById = User.get(idUser = id)
         data = readById.to_dict()
-    
         response = {
             "Data": data
         } 
@@ -204,7 +216,7 @@ def updateUser(id):
                         result = Checker(requestStruct.userUpdate(),soft=True).validate(data)
                         User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'],picture = "profile"+"_"+currentUser['idUser'])
                         response = {
-                            "Data": result,
+                            #"Data": result,
                             "Message": "Success Update User"
                         }
                         return responseHandler.ok(response)

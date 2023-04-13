@@ -9,6 +9,7 @@ app.route('/googlelogin/callback', methods=["GET", "POST"])(auth.googleLoginCall
 
 #User
 app.route('/register',methods=['POST'])(user.createUser)
+app.route('/list/users',methods = ['GET'])(user.listUsers)
 app.route('/profile/<id>',methods=['GET'])(user.readUser)
 app.route('/update/profile/<id>',methods=['PATCH'])(user.updateUser)
 app.route('/delete/profile/<id>',methods=['DELETE'])(user.deleteUser)
