@@ -1,54 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function Search() {
-  const [searchString, setSearchString] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearch = (event) => {
-    const searchString = event.target.value;
+const [pengguna, setPengguna] = useState([]);
+const [query, setQuery] = useState("");
+const penggunas = Array.from(pengguna);
 
-    setSearchString(searchString);
+ useEffect(() => {
+    fetch('http://13.239.136.211/api/blog/list/users')
+      .then(response => response.json())
+      .then(data => setPengguna(data));
+  }, []);
 
-    if (searchString.length > 2) {
-      // Lakukan pencarian hanya jika panjang kata kunci lebih dari 2 karakter
-
-      // Implementasi kode untuk melakukan pencarian kosa kata berdasarkan API
-      fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchString}`)
-        .then((response) => response.json())
-        .then((data) => {
-          // Ambil definisi dari hasil pencarian API
-          const definitions = data[0].meanings.map((meaning) => meaning.definitions[0].definition);
-
-          // Simpan hasil pencarian pada state searchResults
-          setSearchResults([
-            {
-              id: 1,
-              word: searchString,
-              definition: definitions.join(', ')
-            }
-          ]);
-        })
-        .catch((error) => {
-          console.error(error);
-          setSearchResults([]);
-        });
-    } else {
-      // Bersihkan hasil pencarian jika panjang kata kunci kurang dari atau sama dengan 2 karakter
-      setSearchResults([]);
-    }
+  const handleChange = event => {
+    setQuery(event.target.value);
   };
 
+  const filteredUsers = penggunas.filter(user => {
+    return user.username.toLowerCase().includes(query.toLowerCase());
+  });
   return (
     <>
       <div>
-        <input type="text" style={{width:"700px"}} className="form-control" placeholder="cari sesuatu..." value={searchString} onChange={handleSearch} />
+        <input
+         type="text" 
+         style={{width:"700px"}} 
+         className="form-control" 
+         placeholder="cari sesuatu..." 
+        //  value={searchValue} 
+         onChange={handleChange} 
+         />
+         {/* <button onClick={handleSearch}>cari</button> */}
       </div>
       <div>
-        {searchResults.map((result) => (
-          <div key={result.id}>
-            <p><strong>{result.word}</strong> {result.definition}</p>
-          </div>
-        ))}
+        {
+          filteredUsers.map(user=>(
+            <li key={user.id}>{user.username}</li>
+          ))
+        }
       </div>
     </>
   );
