@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
-import NewStory from "./pages/Content/NewStory";
+import NewStory from "./pages/Content/index";
 import Profile from "./pages/Profile/Profile";
 import { Account } from "./pages/Profile/Account";
 import PageNotFound from "./pages/Php";
