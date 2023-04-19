@@ -72,11 +72,11 @@ def Tag():
 def content():
     schema = {
         "title": str,
-        "subtitle": str,
-        "img": str,
-        "captions": str,
-        "contentBody": str,
-        "datePublished": str
+        # "subtitle": str,
+        # "img": str,
+        # "captions": str,
+        # "contentBody": str
+        # "datePublished": str
     }
     return schema
 

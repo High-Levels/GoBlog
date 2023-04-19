@@ -1,5 +1,8 @@
 from app import app
 from app.controllers import auth,user,category,tag, article, articleLikes, comment, friend, follow
+from flask import render_template
+import markdown
+import os
 
 #Auth
 app.route('/login',methods=['POST'])(auth.login)
@@ -36,9 +39,9 @@ app.route('/create/tag',methods = ['POST'])(tag.createTag)
 # Article
 app.route('/create/article', methods=["POST"])(article.createArticle)
 app.route('/read/article/<id>', methods=["GET"])(article.readArticle)
-app.route('/update/article/<id>', methods=["PUT"])(article.updateArticle)
-app.route('/delete/article/<id>', methods=["DELETE"])(article.deleteArticle)
-app.route('/list/articles', methods=["GET"])(article.readAllArticle)
+# app.route('/update/article/<id>', methods=["PUT"])(article.updateArticle)
+# app.route('/delete/article/<id>', methods=["DELETE"])(article.deleteArticle)
+# app.route('/list/articles', methods=["GET"])(article.readAllArticle)
 app.route('/list/userRecentArticles/<id>', methods=["GET"])(article.userRecentArticle)
 
 

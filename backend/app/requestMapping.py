@@ -42,11 +42,11 @@ def Tag(jsonBody):
 def content(jsonBody):
     data = {
         "title": jsonBody["title"],
-        "subtitle": jsonBody["subtitle"],
-        "img": jsonBody["img"],
-        "captions": jsonBody["caption"],
-        "contentBody": jsonBody["contentBody"],
-        "datePublished": jsonBody["datePublished"]
+        # "subtitle": jsonBody["subtitle"],
+        # "img": jsonBody["img"],
+        # "captions": jsonBody["caption"],
+        # "contentBody": jsonBody["contentBody"],
+        # "datePublished": jsonBody["datePublished"]
     }
     return data
 
