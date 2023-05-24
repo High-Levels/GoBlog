@@ -1,57 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import {InputText} from 'primereact/inputtext';
+import { Button } from 'primereact/button';
 
-function Vocabulary() {
-  const [searchString, setSearchString] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+function Search() {
+  const [username, setUsername] = useState('');
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSearch = (event) => {
-    const searchString = event.target.value;
+  const handleSearch = async () => {
+    try {
+      setLoading(true);
+      setError('');
 
-    setSearchString(searchString);
-
-    if (searchString.length > 2) {
-      // Lakukan pencarian hanya jika panjang kata kunci lebih dari 2 karakter
-
-      // Implementasi kode untuk melakukan pencarian kosa kata berdasarkan API
-      fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchString}`)
-        .then((response) => response.json())
-        .then((data) => {
-          // Ambil definisi dari hasil pencarian API
-          const definitions = data[0].meanings.map((meaning) => meaning.definitions[0].definition);
-
-          // Simpan hasil pencarian pada state searchResults
-          setSearchResults([
-            {
-              id: 1,
-              word: searchString,
-              definition: definitions.join(', ')
-            }
-          ]);
-        })
-        .catch((error) => {
-          console.error(error);
-          setSearchResults([]);
-        });
-    } else {
-      // Bersihkan hasil pencarian jika panjang kata kunci kurang dari atau sama dengan 2 karakter
-      setSearchResults([]);
+      const response = await axios.get(`http://13.239.136.211/api/blog/list/users?username=${username}`);
+      // console.log(response.data);
+      setUserData(response.data);
+    } catch (error) {
+      setError('Username tidak ditemukan');
+    } finally {
+      setLoading(false);
     }
   };
+// const [pengguna, setPengguna] = useState([]);
+// const [query, setQuery] = useState("");
+// const penggunas = Array.from(pengguna);
 
+//  useEffect(() => {
+//     fetch('http://13.239.136.211/api/blog/list/users')
+//       .then(response => response.json())
+//       .then(data => setPengguna(data));
+//   }, []);
+
+//   const handleChange = event => {
+//     setQuery(event.target.value);
+//   };
+
+//   const filteredUsers = penggunas.filter(user => {
+//     return user.username.toLowerCase().includes(query.toLowerCase());
+//   });
   return (
-    <div className="container">
-      
-      <input type="text" className="form-control mb-2" placeholder="Ketik kata kunci..." value={searchString} onChange={handleSearch} />
-      <ul>
-          {searchResults.map((result) => (
-            <li key={result.id}>
-              <li>{result.word}</li>
-              <li>{result.definition}</li>
-            </li>
-          ))}
-</ul>
-    </div>
+    <>
+      <div>
+        <span className='p-input-icon-left'>
+        <InputText
+         type="text" 
+         style={{width:"700px"}} 
+         className="form-control" 
+         placeholder="cari sesuatu..." 
+        //  value={searchValue} 
+         onChange={(e) => setUsername(e.target.value)} 
+         value={username}
+         />
+        </span>
+        <Button onClick={handleSearch} disabled={loading}>
+        {loading ? 'Loading...' : 'Search'}
+      </Button>
+      </div>
+      <div>
+      {error && <p>{error}</p>}
+      {userData && (
+        <div>
+          <h2>User Data</h2>
+          <p>Name: {userData.name}</p>
+          <p>Email: {userData.email}</p>
+          {/* Tambahkan properti data lain yang ingin ditampilkan */}
+        </div>
+      )}
+
+      </div>
+    </>
   );
 }
 
-export default Vocabulary;
+export default Search;

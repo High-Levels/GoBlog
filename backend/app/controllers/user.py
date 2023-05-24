@@ -28,7 +28,9 @@ def createUser():
         jsonBody = request.json
         data = requestMapping.createUser(jsonBody)
         result = Checker(requestStruct.User(),soft = True).validate(data)
-        checkUser = select(a for a in User if a.username is result['username'] or a.email is result['email'] and a.isActivated is True)[:]
+        checkUser = select(a for a in User if a.username is result['username'] or 
+                           a.email is result['email'] or a.googleEmail is result['email'] 
+                           and a.isActivated is True)[:]
         checkActivation = select(a for a in User if a.isActivated is False and a.email is result['email'])[:]
         if result['username']=="" or result['email']==""or result['password']=="":
             response = {
@@ -101,6 +103,22 @@ def getChangePassword(id):
         }
         return responseHandler.badGateway(response)
 
+def listUsers():
+    try:
+        listUser = select(a for a in User)[:]
+        data = []
+        for i in range(len(listUser)):
+            data.append(listUser[i].to_dict())
+        response = {
+            "Data": data
+        }
+        return responseHandler.ok(response)
+    except Exception as err:
+        response = {
+            "Error": str(err)
+        }
+        return responseHandler.badGateway(response)
+
 def setChangePassword(id):
     try:
         jsonBody = request.json
@@ -141,7 +159,6 @@ def readUser(id):
     try:
         readById = User.get(idUser = id)
         data = readById.to_dict()
-    
         response = {
             "Data": data
         } 
@@ -202,7 +219,7 @@ def updateUser(id):
                         result = Checker(requestStruct.userUpdate(),soft=True).validate(data)
                         User[id].set(username = result['username'],email = result['email'], password = hashpass, name = result['name'], gender = result['gender'], address = result['address'], birth = result['birth'],phoneNumber = result['phoneNumber'],picture = "profile"+"_"+currentUser['idUser'])
                         response = {
-                            "Data": result,
+                            #"Data": result,
                             "Message": "Success Update User"
                         }
                         return responseHandler.ok(response)

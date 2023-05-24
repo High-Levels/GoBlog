@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_jwt_extended import jwt_required, get_jwt_identity
+import json
 from flask import request,redirect,url_for
 from json_checker import Checker
 import uuid
@@ -9,6 +10,9 @@ from app.models.friendRequest import FriendRequest
 from app.models.user import User
 from app import requestMapping,requestStruct,responseHandler
 from datetime import datetime
+from .notification import newNotification
+from app.notificationType import NotificationType
+from pony.orm import commit, rollback
 
 @jwt_required()
 def getUserOutgoingFriendRequest():
@@ -55,6 +59,7 @@ def getUserOutgoingFriendRequest():
         response["error"] = True
         response["logMsg"] = str(e)
         print(e)
+        rollback()
         return responseHandler.badGateway(response)
     
 @jwt_required()
@@ -102,6 +107,7 @@ def getUserIncomingFriendRequest():
         response["error"] = True
         response["logMsg"] = str(e)
         print(e)
+        rollback()
         return responseHandler.badGateway(response)
 
 @jwt_required()
@@ -162,6 +168,8 @@ def getUserFriend():
         response["error"] = True
         response["logMsg"] = str(e)
         print(e)
+        # pony rollback
+        rollback()
         return responseHandler.badGateway(response)
 
 
@@ -193,7 +201,7 @@ def sendFriendRequest(targetIdUser):
             if len(selectTargetUser) == 0:
                 response["targetIdUserExist"] = False
                 response["logMsg"] = "Target user does not exist"
-                return responseHandler.badRequest(response)
+                return responseHandler.ok(response)
             response["targetIdUserExist"] = True
             selectFriendWithTargetUser = select(
             f for f in Friend if 
@@ -238,12 +246,19 @@ def sendFriendRequest(targetIdUser):
                 selectTargetUserFriendRequest.delete(bulk=True)
                 selectCurrentUserFriendRequest.delete(bulk=True)
                 FriendObject = Friend(userOne=currentUser["idUser"], userTwo=targetIdUser, dateFriend=datetime.now())
+                newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REQUEST_ACCEPTED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
                 response["logMsg"] = "Target user already sent you friend request. You are now friend with target user."
                 return responseHandler.ok(response)
         except Exception as e:
             response["error"] = True
             response["logMsg"] = str(e)
             print(e)
+            rollback()
             return responseHandler.badGateway(response)
         
 
@@ -312,12 +327,19 @@ def acceptFriendRequest(targetIdUser):
         selectTargetUserFriendRequest.delete(bulk=True)
         selectCurrentUserFriendRequest.delete(bulk=True)
         FriendObject = Friend(userOne=currentUser["idUser"], userTwo=targetIdUser, dateFriend=datetime.now())
+        newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REQUEST_ACCEPTED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
         response["logMsg"] = "Friend request accepted"
         return responseHandler.ok(response)
     except Exception as e:
         response["error"] = True
         response["logMsg"] = str(e)
         print(e)
+        rollback()
         return responseHandler.badGateway(response)
 
 @jwt_required()
@@ -350,6 +372,12 @@ def rejectFriendRequest(targetIdUser):
             return responseHandler.ok(response)
         response["targetUserSendYouFriendRequest"] = True
         selectTargetUserFriendRequest.delete(bulk=True)
+        newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REQUEST_REJECTED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
         response["logMsg"] = "Friend request rejected"
         return responseHandler.ok(response)
     except Exception as e:
@@ -376,7 +404,7 @@ def unfriend(targetIdUser):
         if len(selectTargetIdUser) == 0:
             response["targetUserExist"] = False
             response["logMsg"] = "Target user does not exist"
-            return responseHandler.badRequest(response)
+            return responseHandler.ok(response)
         response["targetUserExist"] = True
         selectFriend = select(f for f in Friend 
                               if 
@@ -388,8 +416,13 @@ def unfriend(targetIdUser):
             response["logMsg"] = "You are not friend with the target user"
             return responseHandler.ok(response)
         response["isFriend"] = True
-        for f in selectFriend:
-            f.delete()
+        selectFriend.delete(bulk=True)
+        newNotificationResult = newNotification(uuid.UUID(targetIdUser), 
+                                                str(NotificationType.FRIEND_REMOVED),
+                                                notificationJson=json.dumps({
+                                                    "otherUser":currentUser["idUser"]
+                                                }),
+                                                notificationDate=datetime.now())
         response["logMsg"] = "You are no longer friend with the target user"
         return responseHandler.ok(response)
         
@@ -397,6 +430,7 @@ def unfriend(targetIdUser):
         response["error"] = True
         response["logMsg"] = str(e)
         print(e)
+        rollback()
         return responseHandler.badGateway(response)
     
      

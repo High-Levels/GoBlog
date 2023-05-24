@@ -7,11 +7,11 @@
  /* Set button search width to 100% on mobile devices */
  @media (max-width: 576px) {
   .btn {
-    width: 100%;
+    width: 20%;
   }
 }
 /* Hide input search on mobile devices */
-@media (max-width: 991.98px) {
+@media (max-width: 769.96px) {
   .d-lg-block {
     display: none;
   }

@@ -6,7 +6,13 @@ class User(db.Entity):
     idUser = PrimaryKey(uuid.UUID,default = uuid.uuid4 ,column = 'id_user')
     username = Required(str, unique = True)
     email = Required(str, unique = True)
+    # if registered with google,
+    # username will be random uuid,
+    # and password will be empty string
     password = Required(str)
+    # if linked with google,
+    # the linked email will be here
+    googleEmail = Optional(str,nullable = True)
     name = Optional(str,nullable = True)
     gender = Optional(str, nullable = True)
     address = Optional(str,nullable = True)
@@ -14,7 +20,7 @@ class User(db.Entity):
     phoneNumber = Optional(str, column = "phone_number",nullable = True)
     dateRegister = Required(date,column = 'date_register')
     picture = Optional(str, nullable = True)
-    isActivated = Required(bool)
+    isActivated = Required(bool,column = "is_activated")
     article = Set('Article')
     comment = Set('Comment')
     like = Set('Like')
@@ -24,3 +30,4 @@ class User(db.Entity):
     friendRequestRecipient = Set('FriendRequest', reverse="recipient")
     followSource = Set("Follow", reverse="source")
     followTarget = Set("Follow", reverse="target")
+    notificationReceiver = Set("Notification", reverse="receiver")

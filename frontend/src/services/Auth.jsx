@@ -1,10 +1,13 @@
 import axios from 'axios'
 
-const API_URL = 'http://192.168.1.62:5000'
+// const API_URL = 'http://localhost:5000'
+const API_URL = '/api/blog'
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/register`, userData)
+    const response = await axios.post(`${API_URL}/register`, userData, {
+      headers: { 'Content-Type': 'application/json' },
+    })
     return response.data
   } catch (error) {
     throw error.response.data

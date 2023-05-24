@@ -1,32 +1,39 @@
 import React from "react";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { Draft } from "./Draft";
+import Modal from "../../components/Modal";
+import CardProfile from "../../components/CardProfile";
+import { Account } from "./Account";
+import { Link, useNavigate } from "react-router-dom";
+import "./profile.css";
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const handleWriteStory = () => {
+    navigate("/new-story");
+  };
   return (
     <div className="container-fluid">
-      <hr />
-      <header className="d-flex align-items-center justify-content-md-between p-3 mb-4 border-bottom">
+      <div className="prof">
+        <CardProfile />
+      </div>
+      <header className="d-flex align-items-center justify-content-md-between p-3 mt-4 mb-4 border-bottom">
         <h3 className="mt-2">Your Stories</h3>
-        <div className="ms-auto d-flex gap-2">
-          <Button label="Write a story" variant="secondary" />
-          <Button label="Edit" style={{
-            color:"red",
-            }}/>
+        <div className="ms-auto d-flex gap-2 p-3">
+          <Button
+            label="Write a story"
+            variant="secondary"
+            onClick={handleWriteStory}
+          />
+          <Button label="Edit" variant="light" />
         </div>
       </header>
       <div className="d-flex p-3 gap-2">
-        <Button label="Draft" variant="primary" />
-        <Button label="Published" variant="primary" />
-        <Button label="Response" variant="primary" />
-        <button className="btn btn-primary" onClick={useEffect(() => {
-          effect
-          return () => {
-            cleanup
-          };
-        }, [input])}>djckajk</button>
+        <Link to="/profile/draft">Draft</Link>
+        <Link to="/profile/published">Published</Link>
+        <Link to="/profile/respond">Response</Link>
       </div>
+      <hr />
     </div>
   );
 };
